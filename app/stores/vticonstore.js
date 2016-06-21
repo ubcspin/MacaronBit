@@ -603,7 +603,7 @@ var vticonStore = Reflux.createStore({
 		for (var p in this._data[name].parameters) {
 			
 			var originalPoints = this._data[name].parameters[p].data.sort(compare)
-			
+			// middle is selected points
 			var middle = originalPoints.filter(kfSelected);
 
 			if (middle.length > 0) {
@@ -615,7 +615,9 @@ var vticonStore = Reflux.createStore({
 
 				var start = originalPoints.slice(0,start_i);
 				var end = originalPoints.slice(end_i + 1,originalPoints.length);
-
+				// m is keyframe
+				// i is index of keyframe in arr
+				// arr is the array of keyframes, i.e. middle
 				middle.forEach(function(m,i,arr){
 					m.t = Math.floor(m.t + ((m.t - start_t) * scaleFactor));
 				})
