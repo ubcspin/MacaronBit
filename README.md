@@ -6,10 +6,11 @@ Vibrotactile Icon Editor
 
 `arrow keys` : move playhead left or right.  
 `ctrl`+(`>`/`<`) : x-scale  
-`ctrl`+`/` : Divides selected keyframes in half.  
+`ctrl`+`/` : divides selected keyframes in half.  
 `space` : play.  
 `backspace`/`delete` : remove selected keyframe(s)  
 `ctrl`+(`left`/`right`) : increment playhead  
+`ctrl`+`i` : invert selected keyframes
 
 
 #### Changelog:

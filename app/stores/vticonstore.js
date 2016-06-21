@@ -37,7 +37,8 @@ var vticonActions = Reflux.createActions(
 
 		'deleteSelectedKeyframes',
 		'simplifyKeyframes',
-		'xScaleKeyframes'
+		'xScaleKeyframes',
+		'invertKeyframes',
 	]
 
 );
@@ -642,6 +643,63 @@ var vticonStore = Reflux.createStore({
 		this.trigger(this._data);
 	},
 
+onInvertKeyframes(scaleFactor,name="") {
+
+		var kfNotSelected = function(value) {
+			return !value.selected;
+		};
+		var kfSelected = function(value) {
+			return value.selected;
+		};
+
+		var compare = function (a, b) {
+		  if (a.t < b.t) {
+		    return -1;
+		  }
+		  if (a.t > b.t) {
+		    return 1;
+		  }
+		  // a must be equal to b
+		  return 0;
+		}
+
+		name = this._selectVTIcon(name);
+
+		LogStore.actions.log("VTICON_INVERTKEYFRAMES_"+name);
+
+		this._saveStateForUndo();
+
+		for (var p in this._data[name].parameters) {
+			
+			var originalPoints = this._data[name].parameters[p].data.sort(compare)
+			// middle is selected points
+			var middle = originalPoints.filter(kfSelected);
+
+			if (middle.length > 0) {
+				var start_i = originalPoints.indexOf(middle[0])
+				var end_i = originalPoints.indexOf(middle[middle.length - 1])
+				var end_t = middle[middle.length - 1].t
+				var start_t = middle[0].t
+
+				var start = originalPoints.slice(0,start_i);
+				var end = originalPoints.slice(end_i + 1,originalPoints.length);
+				var maxVal = this._data[name].parameters[p].valueScale[1];
+				// m is keyframe
+				// i is index of keyframe in arr
+				// arr is the array of keyframes, i.e. middle
+				middle.forEach(function(m,i,arr){
+					
+					m.value =  maxVal - m.value;
+				}.bind(this))
+
+
+				var ret = start.concat(end).concat(middle).sort(compare);
+				this._data[name].parameters[p].data = ret;
+			}
+		}
+
+		this.trigger(this._data);
+	},
 	/**
 	 * KF Guards
 	 */
