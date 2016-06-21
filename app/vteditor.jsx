@@ -238,6 +238,12 @@ var VTEditor = React.createClass({
    					e.preventDefault();
    				}
    				break;
+   			case 73: //i
+   				if (e.ctrlKey || e.metaKey) {
+   					VTIconStore.actions.invertKeyframes();
+   					
+   				}
+   				break;
    			case 191: // forward slash "/"
    				if (e.ctrlKey || e.metaKey) {
    					// VTIconStore.actions.redo();
