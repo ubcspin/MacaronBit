@@ -32,7 +32,7 @@ Vibrotactile Icon Editor
 
 1. Open a terminal window, navigate to /MacaronBit, and type `npm run dev`.
 
-2. Open a new terminal window, navigate to /MacaronBit, and type `npm start`.
+2. While the server is running, open a *new* terminal window, navigate to /MacaronBit, and type `npm start`.
 
 3. Open a web browser and navigate to `localhost:8080`.
 
