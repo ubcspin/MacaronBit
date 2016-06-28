@@ -22,13 +22,13 @@ Vibrotactile Icon Editor
 
 ##
 
-Quick install:
+## Quick install:
 
 1. Clone the git repository by opening a terminal window and navigating to a directory of your choise and typing `git clone https://github.com/ubcspin/MacaronBit.git`
 
 2. Navigate into the newly cloned MacaronBit folder and type `npm install`.
 
-Running Macaron Bit:
+## Running Macaron Bit:
 
 1. Open a terminal window, navigate to /MacaronBit, and type `npm run dev`.
 
@@ -36,7 +36,7 @@ Running Macaron Bit:
 
 3. Open a web browser and navigate to `localhost:8080`.
 
-## Build Environment
+### Build Environment
 
 Macaron requires the following libraries:
 
