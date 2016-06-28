@@ -16,6 +16,7 @@
     "johnny-five": "^0.9.44", 
     "pitchfinder": "^2.0.3",
     "react": "^0.13.3",
+    "react-file-input": "^0.2.5",
     "reflux": "^0.2.12",
     "script-loader": "^0.6.1",
     "socket.io": "^1.3.7",

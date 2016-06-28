@@ -229,7 +229,13 @@ function main() {
 
     app.use("/thirdparty", express.static(__dirname + '/thirdparty'));
     app.use("/recordings", express.static(__dirname+'/recordings'));
+    app.use(express.static(__dirname + '/js'));
 
+    app.get('/', function (req, res) {
+      res.sendfile(__dirname + '/index.html');
+      console.log(__dirname)
+    });
+     app.use("/css", express.static(__dirname + '/css'));
 
     var host = server.address().address;
     var port = server.address().port;

@@ -24,13 +24,17 @@ Vibrotactile Icon Editor
 
 Quick install:
 
-`npm install`
+1. Clone the git repository by opening a terminal window and navigating to a directory of your choise and typing `git clone https://github.com/ubcspin/MacaronBit.git`
 
-`npm run deploy`
+2. Navigate into the newly cloned MacaronBit folder and type `npm install`.
 
-Run with:
+Running Macaron Bit:
 
-`node server.js`
+1. Open a terminal window, navigate to /MacaronBit, and type `npm run dev`.
+
+2. Open a new terminal window, navigate to /MacaronBit, and type `npm start`.
+
+3. Open a web browser and navigate to `localhost:8080`.
 
 ## Build Environment
 
@@ -45,7 +49,8 @@ Macaron requires the following libraries:
 
 Begin by installing [NPM][npm] for your OS. Once NPM is installed, install react as follows:
 
- `npm install react --save`
+ - `npm install react --save`
+ - `npm install react-file-input --save`
 
 and install webpack:
 

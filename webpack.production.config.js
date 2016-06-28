@@ -11,7 +11,7 @@ config = {
         }
     },
     output: {
-        path: path.resolve(__dirname, 'dist'),
+        path: path.resolve(__dirname, 'backend/js'),
         filename: 'bundle.js',
     },
     module: {
