@@ -1,6 +1,10 @@
 # Macaron
 Vibrotactile Icon Editor
 
+### Mouse commands:
+`double click` : add a keyframe
+`click`+`drag` : box select
+`shift`+`click` : add keyframe to selection
 
 ### Fun keyboard shortcuts:
 
@@ -8,7 +12,7 @@ Vibrotactile Icon Editor
 `ctrl`+(`>`/`<`) : x-scale  
 `ctrl`+`/` : divides selected keyframes in half.  
 `space` : play.  
-`backspace`/`delete` : remove selected keyframe(s)  
+`-`/`delete` : remove selected keyframe(s)  
 `ctrl`+(`left`/`right`) : increment playhead  
 `ctrl`+`i` : invert selected keyframes
 
