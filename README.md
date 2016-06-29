@@ -2,9 +2,9 @@
 Vibrotactile Icon Editor
 
 ### Mouse commands:
-`double click` : add a keyframe
-`click`+`drag` : box select
-`shift`+`click` : add keyframe to selection
+`double click` : add a keyframe  
+`click`+`drag` : box select  
+`shift`+`click` : add keyframe to selection  
 
 ### Fun keyboard shortcuts:
 
@@ -14,7 +14,7 @@ Vibrotactile Icon Editor
 `space` : play.  
 `-`/`delete` : remove selected keyframe(s)  
 `ctrl`+(`left`/`right`) : increment playhead  
-`ctrl`+`i` : invert selected keyframes
+`ctrl`+`i` : invert selected keyframes  
 
 
 #### Changelog:
