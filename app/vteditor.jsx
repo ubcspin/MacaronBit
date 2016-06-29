@@ -173,7 +173,8 @@ var VTEditor = React.createClass({
    			case 32: //space bar
    				PlaybackStore.actions.togglePlaying();
    				break;
-   			case 8: //backspace
+   			//case 8: //backspace
+   			case 189: //dash (-)
    			case 46: //delete
    				//only delete in main editor
    				//TODO: should this check be somewhere else?
