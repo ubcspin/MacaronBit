@@ -24,9 +24,13 @@ Vibrotactile Icon Editor
 
 ## Quick install:
 
+0. Make sure you have [node][nodejs] and [NodeJS Package Manager (NPM)][npm] in your path. You can install node [here][https://nodejs.org/en/].
+
 1. Clone the git repository by opening a terminal window and navigating to a directory of your choise and typing `git clone https://github.com/ubcspin/MacaronBit.git`
 
-2. Navigate into the newly cloned MacaronBit folder and type `npm install`.
+2. If you are on mac or linux rename "package[mac_use_this].json" -> "package.json". If you are on windows, rename "package[windows_use_this].json" -> "package.json".
+
+3. In terminal, navigate into the newly cloned MacaronBit folder and type `npm install`.
 
 ## Running Macaron Bit:
 
