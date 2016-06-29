@@ -72,7 +72,7 @@ function rendered_path(sp,name) {
 }
 function render() {
     stop_render();
-    // console.log('rendered path: ',getMaxOfArray(rendered_path_main),getMinOfArray(rendered_path_main))
+     console.log('rendered path: ',getMaxOfArray(rendered_path_main),getMinOfArray(rendered_path_main))
     if (rendered_path_main.length==0 || rendered_path_example.length == 0) {
         log('No path to render yet...');
     }

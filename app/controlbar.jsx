@@ -5,6 +5,8 @@ import d3 from 'd3';
 var PlaybackStore = require('./stores/playbackstore.js');
 var VTIconStore = require('./stores/vticonstore.js');
 
+var io = require('./../thirdparty/socket/socket.io.js');
+var socket = io.connect("http://localhost:3000");
 
 var ControlBar = React.createClass({
 
@@ -36,6 +38,8 @@ var ControlBar = React.createClass({
 	_onPlayClick : function (event) {
 		VTIconStore.actions.selectVTIcon(this.props.name);
 		PlaybackStore.actions.togglePlaying();
+		console.log("_onRenderClick called!!")
+		socket.emit('render');
 	},
 
 	_onSkipBackwardClick : function (event) {

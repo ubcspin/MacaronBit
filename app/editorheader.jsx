@@ -53,12 +53,12 @@ var EditorHeader = React.createClass({
 	    	displayAnimation:false,
 	    	displayInterfaceMode:false, //was false
 	    	displaySaveButton:true,
-	    	displayStartButton:true,
-			displayTestButton:true,
+	    	displayStartButton:false,
+			displayTestButton:false,
 			displayRenderButton:true,
 			displayStopButton:true,
-			displayResetButton:true,
-			displayGetSetPointsButton:true,
+			displayResetButton:false,
+			displayGetSetPointsButton:false,
 			displayLoadVoodleButton:true,
 			uploadFileID:"uploadedFile",
 			uploadVoodleFileID: "voodleFile"
@@ -292,13 +292,7 @@ var EditorHeader = React.createClass({
 				{loadVoodleButton}
 				
 			</div>
-				<form>
-        			<FileInput name="voodleInput"
-                  		 accept=".csv"
-                  		 placeholder="Voodle file"
-                  		 className="inputClass"
-                  		 onChange={this.handleChange} />
-      			</form>
+				
 		</div>
 			
 			);

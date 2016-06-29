@@ -3,9 +3,9 @@ import Reflux from 'reflux';
 var VTIconStore = require('./vticonstore.js');
 var LogStore = require('./logstore.js');
 
-var PLAYBACK_RATE = 60; //Hz
+var PLAYBACK_RATE = 60; //Hz was 60
 
-var STEP_AMOUNT = 100; //ms
+var STEP_AMOUNT = 100; //ms was 100
 
 
 var playbackActions = Reflux.createActions(
