@@ -1,4 +1,7 @@
 //------------------------------------------------------------------------------
+// MacaronBit
+//------------------------------------------------------------------------------
+
 // Requires
 //------------------------------------------------------------------------------
 var express = require('express');
@@ -11,6 +14,8 @@ var pitchFinder = require('pitchfinder');
 var server = require('http').Server(app);
 var colors = require('colors');
 var io = require('socket.io')(server);
+var serialPort = require('serialport'); // for checking if serial ports are open
+
 
 var functions = require('./functions.js')
 var MotorHandler = require('./motor.js')
@@ -217,6 +222,40 @@ function processCsv(csvfile){
     stream.pipe(csvStream);
 }
 
+function boardload(portName) {
+    //------------------------------------------------------------------------------
+    // Board setup
+    //------------------------------------------------------------------------------
+    board = new five.Board({port:portName});
+    
+    board.on("ready", function() {
+        log('board is ready!')
+        var standby = new five.Pin(7);
+        standby.high()
+
+        myMotor = new five.Motor({
+            pins: {
+                pwm:3,
+                dir:9,
+                cdir:8
+            }
+        });
+
+        myServo = new five.Servo({
+            pin:10,
+            center:true,
+            range: [parameters.servoMin,parameters.servoMax] 
+        });
+
+        board.repl.inject({
+            motor: myMotor,
+            servo: myServo
+        });
+        io.emit('server_message','Ready to start board.');
+            log('Sweep away, my captain.');
+    });
+}
+
 //----------------------------------------------------------------------------------
 // Main
 //----------------------------------------------------------------------------------
@@ -322,35 +361,21 @@ function main() {
     });
 
     //------------------------------------------------------------------------------
-    // Board setup
+    // Deal with the stupid boards
     //------------------------------------------------------------------------------
-    board = new five.Board();
-    
-    board.on("ready", function() {
-        log('board is ready!')
-        var standby = new five.Pin(7);
-        standby.high()
-
-        myMotor = new five.Motor({
-            pins: {
-                pwm:3,
-                dir:9,
-                cdir:8
-            }
-        });
-
-        myServo = new five.Servo({
-            pin:10,
-            center:true,
-            range: [parameters.servoMin,parameters.servoMax] 
-        });
-
-        board.repl.inject({
-            motor: myMotor,
-            servo: myServo
-        });
-        io.emit('server_message','Ready to start board.');
-            log('Sweep away, my captain.');
+    serialPort.list(function (err, ports) {
+        var filtered = ports.filter(function(port){
+            // SerialPort(path,options,openImmediately)
+            var srlport = new serialPort.SerialPort(port.comName,{},false)
+            return  (port.comName.slice(0,11) == '/dev/cu.usb') &&
+                    (!srlport.isOpen()) ? true : false;
+        })
+        if (filtered.length > 1) {
+            boardload(filtered[1].comName); // this is probably stupid...
+        } else {
+            boardload(filtered[0].comName);
+        }
+        console.log(filtered)
     });
 }
 
