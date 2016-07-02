@@ -112,3 +112,10 @@ You can start serving on `localhost:8080` with `node server`.
 [d3]: http://d3js.org
 [reflux]: https://github.com/spoike/refluxjs
 [firebase]: https://www.firebase.com
+
+
+###Setting up the Arduino
+
+![wiring diagram](https://raw.githubusercontent.com/ubcspin/MacaronBit/master/images/wiring_diagram.jpg)
+
+Power pin can be any 3-6V source. Ground pin must be common with the microcontroller, i.e., you can use any ground as long as it is connected to an Arduino ground. Data pin must be one of the PWM pins on the Arduino. In this case, it’s pin 10.
