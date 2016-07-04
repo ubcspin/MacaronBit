@@ -19,6 +19,7 @@ Vibrotactile Icon Editor
 `ctrl`+`i` : invert selected keyframes  
 `ctrl`+`c` : copy
 `ctrl`+`v` : paste  
+`ctrl`+`shift`+`i`  open console (Chrome shortcut)
 
 #### OSX: 
 `cmd`+(`>`/`<`) : x-scale  
@@ -27,6 +28,7 @@ Vibrotactile Icon Editor
 `cmd`+`i` : invert selected keyframes  
 `cmd`+`c` : copy  
 `cmd`+`v` : paste  
+`cmd`+`shift`+`c` : open console (Chrome shortcut)
 
 #### Changelog:
 
