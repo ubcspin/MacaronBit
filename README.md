@@ -14,7 +14,7 @@ Vibrotactile Icon Editor
 #### Windows: 
 
 `ctrl`+(`>`/`<`) : x-scale  
-`ctrl`+`/` : divides selected keyframes in half.  
+`ctrl`+`/` : simplifies selected keyframe points by removing half of them.  
 `ctrl`+(`left`/`right`) : increment playhead  
 `ctrl`+`i` : invert selected keyframes  
 `ctrl`+`c` : copy  
@@ -23,7 +23,7 @@ Vibrotactile Icon Editor
 
 #### OSX: 
 `cmd`+(`>`/`<`) : x-scale  
-`cmd`+`/` : divides selected keyframes in half.  
+`cmd`+`/` : simplifies selected keyframe points by removing half of them.  
 `cmd`+(`left`/`right`) : increment playhead  
 `cmd`+`i` : invert selected keyframes  
 `cmd`+`c` : copy  
