@@ -17,7 +17,7 @@ Vibrotactile Icon Editor
 `ctrl`+`/` : divides selected keyframes in half.  
 `ctrl`+(`left`/`right`) : increment playhead  
 `ctrl`+`i` : invert selected keyframes  
-`ctrl`+`c` : copy
+`ctrl`+`c` : copy  
 `ctrl`+`v` : paste  
 `ctrl`+`shift`+`i`  open console (Chrome shortcut)
 
