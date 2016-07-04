@@ -174,7 +174,6 @@ var VTEditor = React.createClass({
    				PlaybackStore.actions.togglePlaying();
    				break;
    			case 8: //backspace
-   			case 189: //dash (-)
    			case 46: //delete
    				//only delete in main editor
    				//TODO: should this check be somewhere else?
@@ -354,14 +353,57 @@ var VTEditor = React.createClass({
 			var visualizeTicks = keyframeSelectable;
 			var modifiable = this.props.examplesModifiable;
 			exampleEditor = (
-			<div name="example" id="exampleeditor" ref="exampleEditorRef" style={exampleStyle}></div>);
-		}
+			<div name="example" id="exampleeditor" ref="exampleEditorRef" style={exampleStyle}>
+					<ControlBar
+						name="example"
+						playing={this.state.playback.playing}
+						mute={this.state.playback.mute}/>
+					<PlayHead name="example"
+						displayPlayhead={this.state.vticons["example"].selected}
+						scaleX={scaleXExample}
+						currentTime={this.state.playback.currentTime}
+						duration={example_icon.duration}
+						keyframeCircleRadius={this.props.keyframeCircleRadius}
+						playheadFill={this.props.playheadFill}/>
+					<IconVis name="example"
+						scaleX={scaleXExample}
+						vticon={example_icon}
+						currentTime={this.state.playback.currentTime}
+						keyframeCircleRadius={this.props.keyframeCircleRadius}
+						playheadFill={this.props.playheadFill}
+						interpolateParameters={this.interpolateParameters}
+						interpolateParameter={this.interpolateParameter}
+						selection={this.state.selection}
+						selectable={iconVisSelectable}
+						logValues={true}/>
+					{Object.keys(example_icon.parameters).map( (p) => (
+							<KeyframeEditor
+								name="example"
+								scaleX={scaleXExample}
+								currentTime={this.state.playback.currentTime}
+								parameter={p}
+								vticon={example_icon}
+								keyframeCircleRadius={this.props.keyframeCircleRadius}
+								playheadFill={this.props.playheadFill}
+								selection={this.state.selection}
+								selectable={keyframeSelectable}
+								visualization={visualization}
+								visualizeTicks={visualizeTicks}
+								modifiable={modifiable}/>
+						))}
+				</div>);
+				exampleGallery =  <Gallery />;
+			}
 
 		return (
 			<div id="app" ref="appRef">
 				<EditorHeader />
 
 				<div name="main" id="maineditor" ref="mainEditorRef" style={designStyle}>
+					<ControlBar
+						name="main"
+						playing={this.state.playback.playing}
+						mute={this.state.playback.mute}/>
 					<PlayHead name="main"
 						displayPlayhead={this.state.vticons["main"].selected}
 						scaleX={scaleXMain}

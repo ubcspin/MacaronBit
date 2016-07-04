@@ -229,7 +229,7 @@ function boardload(portName) {
     //------------------------------------------------------------------------------
     // Board setup
     //------------------------------------------------------------------------------
-    board = new five.Board({port:portName});
+    board = new five.Board();
     
     board.on("ready", function() {
         log('board is ready!')
@@ -342,6 +342,7 @@ function main() {
         });
 
         socket.on('dirty_reroute',function(msg){
+            console.log("rec. dirty_reroute!")
             myServo.to(msg)
             // log('Dirty dirty voodle reroute : ', msg);
         })
@@ -372,20 +373,21 @@ function main() {
     //------------------------------------------------------------------------------
     // Deal with the stupid boards
     //------------------------------------------------------------------------------
-    serialPort.list(function (err, ports) {
-        var filtered = ports.filter(function(port){
-            // SerialPort(path,options,openImmediately)
-            var srlport = new serialPort.SerialPort(port.comName,{},false)
-            return  (port.comName.slice(0,11) == '/dev/cu.usb') &&
-                    (!srlport.isOpen()) ? true : false;
-        })
-        if (filtered.length > 1) {
-            boardload(filtered[1].comName); // this is probably stupid...
-        } else {
-            boardload(filtered[0].comName);
-        }
-        console.log(filtered)
-    });
+    boardload();
+    // serialPort.list(function (err, ports) {
+    //     var filtered = ports.filter(function(port){
+    //         // SerialPort(path,options,openImmediately)
+    //         var srlport = new serialPort.SerialPort(port.comName,{},false)
+    //         return  (port.comName.slice(0,11) == '/dev/cu.usb') &&
+    //                 (!srlport.isOpen()) ? true : false;
+    //     })
+    //     if (filtered.length > 1) {
+    //         boardload(filtered[1].comName); // this is probably stupid...
+    //     } else {
+    //         boardload(filtered[0].comName);
+    //     }
+    //     console.log(filtered)
+    // });
 }
 
 
