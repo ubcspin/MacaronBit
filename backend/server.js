@@ -2,6 +2,7 @@
 // MacaronBit
 //------------------------------------------------------------------------------
 
+//------------------------------------------------------------------------------
 // Requires
 //------------------------------------------------------------------------------
 var express = require('express');
@@ -75,6 +76,7 @@ function rendered_path(sp,name) {
         rendered_path_main = sp;
     }
 }
+
 function render() {
     stop_render();
      console.log('rendered path: ',getMaxOfArray(rendered_path_main),getMinOfArray(rendered_path_main))
@@ -167,6 +169,7 @@ function importParameters(paramatersFile){
     parameters = jsonContent;
 }
 
+// Decorator for console.log
 function log() {
     var out = []
     var r = Array.from(arguments)
@@ -295,9 +298,9 @@ function main() {
             minFrequency:5,
             maxFrequency:1200
         });
-///------legacy box, delete soon-------------------------//
+    ///------legacy box, delete soon-------------------------//
     //processCsv('recordings/1464126410068_recording.csv') //
-///------------------------------------------------------//
+    ///------------------------------------------------------//
     //------------------------------------------------------------------------------
     // Socket setup
     //------------------------------------------------------------------------------
@@ -337,6 +340,12 @@ function main() {
             log('Rendering...');
             render();
         });
+
+        socket.on('dirty_reroute',function(msg){
+            myServo.to(msg)
+            // log('Dirty dirty voodle reroute : ', msg);
+        })
+
         socket.on('load_setPoints', function(filename){
             console.log('loading set points with', filename)
             if (filename == undefined){
