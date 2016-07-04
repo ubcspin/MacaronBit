@@ -18,7 +18,7 @@ Vibrotactile Icon Editor
 `ctrl`+(`left`/`right`) : increment playhead  
 `ctrl`+`i` : invert selected keyframes  
 `ctrl`+`c` : copy  
-`ctrl`+`v` : paste  
+`ctrl`+`v` : paste (at playhead)  
 `ctrl`+`shift`+`i`  open console (Chrome shortcut)
 
 #### OSX: 
@@ -27,7 +27,7 @@ Vibrotactile Icon Editor
 `cmd`+(`left`/`right`) : increment playhead  
 `cmd`+`i` : invert selected keyframes  
 `cmd`+`c` : copy  
-`cmd`+`v` : paste  
+`cmd`+`v` : paste (at playhead)  
 `cmd`+`shift`+`c` : open console (Chrome shortcut)
 
 #### Changelog:
