@@ -26,11 +26,8 @@ Vibrotactile Icon Editor
 `ctrl`+`v` : paste  
 
 #### OSX: 
-`arrow keys` : move playhead left or right.  
 `cmd`+(`>`/`<`) : x-scale  
 `cmd`+`/` : divides selected keyframes in half.  
-`space` : play.  
-`-`/`delete` : remove selected keyframe(s)  
 `cmd`+(`left`/`right`) : increment playhead  
 `cmd`+`i` : invert selected keyframes  
 `cmd`+`c` : copy  
