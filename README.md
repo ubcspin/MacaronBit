@@ -6,11 +6,6 @@ Vibrotactile Icon Editor
 `click`+`drag` : box select  
 `shift`+`click` : add keyframe to selection  
 
-### Mouse commands:
-`double click` : add a keyframe  
-`click`+`drag` : box select  
-`shift`+`click` : add keyframe to selection  
-
 ### Fun keyboard shortcuts:  
 #### General:  
 `arrow keys` : move playhead left or right.  
