@@ -6,16 +6,35 @@ Vibrotactile Icon Editor
 `click`+`drag` : box select  
 `shift`+`click` : add keyframe to selection  
 
-### Fun keyboard shortcuts:
+### Mouse commands:
+`double click` : add a keyframe  
+`click`+`drag` : box select  
+`shift`+`click` : add keyframe to selection  
 
+### Fun keyboard shortcuts:  
+#### General:  
 `arrow keys` : move playhead left or right.  
+`-`/`delete` : remove selected keyframe(s)  
+
+#### Windows: 
+
 `ctrl`+(`>`/`<`) : x-scale  
 `ctrl`+`/` : divides selected keyframes in half.  
-`space` : play.  
-`-`/`delete` : remove selected keyframe(s)  
 `ctrl`+(`left`/`right`) : increment playhead  
 `ctrl`+`i` : invert selected keyframes  
+`ctrl`+`c` : copy
+`ctrl`+`v` : paste  
 
+#### OSX: 
+`arrow keys` : move playhead left or right.  
+`cmd`+(`>`/`<`) : x-scale  
+`cmd`+`/` : divides selected keyframes in half.  
+`space` : play.  
+`-`/`delete` : remove selected keyframe(s)  
+`cmd`+(`left`/`right`) : increment playhead  
+`cmd`+`i` : invert selected keyframes  
+`cmd`+`c` : copy  
+`cmd`+`v` : paste  
 
 #### Changelog:
 
