@@ -162,6 +162,16 @@ function importParameters(paramatersFile){
     parameters = jsonContent;
 }
 
+function importCrumbs(file1){
+
+    var content = fs.readFileSync(file1,'utf8')
+    console.log("fs.readFileSync output: ", content)
+     var jsonContent = JSON.parse(content)
+     console.log("JSON content: ",jsonContent)
+    io.emit('sendCrumb',jsonContent);
+    //[object ArrayBuffer]
+}
+
 function log() {
     var out = []
     var r = Array.from(arguments)
@@ -226,7 +236,7 @@ function main() {
     // Server setup
     //------------------------------------------------------------------------------
     server.listen(3000);
-
+    
     app.use("/thirdparty", express.static(__dirname + '/thirdparty'));
     app.use("/recordings", express.static(__dirname+'/recordings'));
     app.use(express.static(__dirname + '/js'));
@@ -246,6 +256,7 @@ function main() {
     // json poop
     //------------------------------------------------------------------------------
     importParameters("recordings/test_parameters.json")
+
     console.log('default parameters: ',parameters)
     ///////////////////////////////////////////////////////////
     // Voodle code
@@ -264,6 +275,12 @@ function main() {
     //------------------------------------------------------------------------------
     io.on('connection', function(socket){
         log('User connected.');
+
+        //crumb request
+        socket.on('getCrumb', function(crumbName){
+            importCrumbs("recordings/crumbs/"+crumbName)
+            console.log('get crumb request works!')
+        });
 
         //User disconnects
         socket.on('disconnect', function(){

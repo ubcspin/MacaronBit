@@ -1,0 +1,91 @@
+{
+  "duration": 3000,
+  "selectedTimeRange": {
+    "active": false,
+    "time1": 0,
+    "time2": 0
+  },
+  "selected": true,
+  "parameters": {
+    "position": {
+      "valueScale": [
+        0,
+        1
+      ],
+      "data": [
+        {
+          "t": 1.150837988826808,
+          "value": 0.40796718326788606,
+          "selected": false,
+          "id": 458
+        },
+        {
+          "t": 949.6648044692745,
+          "value": 0.947292752833435,
+          "selected": false,
+          "id": 472
+        },
+        {
+          "id": 532,
+          "t": 1742.4469273743014,
+          "value": 0.4666666666666661,
+          "selected": false
+        },
+        {
+          "t": 2386.4189944134077,
+          "value": 0.9515971675341882,
+          "selected": false,
+          "id": 506
+        },
+        {
+          "id": 534,
+          "t": 2997.9050279329617,
+          "value": 0.5333333333333335,
+          "selected": false
+        }
+      ]
+    },
+    "random": {
+      "valueScale": [
+        0,
+        1
+      ],
+      "data": [
+        {
+          "t": 953.2122905027937,
+          "value": 0,
+          "selected": false,
+          "id": 2
+        }
+      ]
+    },
+    "maxValue": {
+      "valueScale": [
+        0,
+        1
+      ],
+      "data": [
+        {
+          "t": 953.2122905027937,
+          "value": 1,
+          "selected": false,
+          "id": 3
+        }
+      ]
+    },
+    "minValue": {
+      "valueScale": [
+        0,
+        1
+      ],
+      "data": [
+        {
+          "t": 953.2122905027937,
+          "value": 0,
+          "selected": false,
+          "id": 3
+        }
+      ]
+    }
+  }
+}

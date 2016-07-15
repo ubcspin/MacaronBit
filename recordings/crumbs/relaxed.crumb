@@ -1,0 +1,151 @@
+{
+  "duration": 3000,
+  "selectedTimeRange": {
+    "active": false,
+    "time1": 0,
+    "time2": 0
+  },
+  "selected": true,
+  "parameters": {
+    "position": {
+      "valueScale": [
+        0,
+        1
+      ],
+      "data": [
+        {
+          "id": 283,
+          "t": 7.105427357601002e-15,
+          "value": 0.25999999999999995,
+          "selected": false
+        },
+        {
+          "id": 284,
+          "t": 481.843575418994,
+          "value": 1,
+          "selected": false
+        },
+        {
+          "id": 285,
+          "t": 997.2067039106145,
+          "value": 0.25999999999999995,
+          "selected": false
+        },
+        {
+          "id": 286,
+          "t": 1479.0502793296084,
+          "value": 1,
+          "selected": false
+        },
+        {
+          "id": 287,
+          "t": 1992.31843575419,
+          "value": 0.25999999999999995,
+          "selected": false
+        },
+        {
+          "id": 288,
+          "t": 2474.162011173184,
+          "value": 1,
+          "selected": false
+        },
+        {
+          "id": 289,
+          "t": 2991.6201117318433,
+          "value": 0.25999999999999995,
+          "selected": false
+        }
+      ]
+    },
+    "random": {
+      "valueScale": [
+        0,
+        1
+      ],
+      "data": [
+        {
+          "id": 290,
+          "t": 400.13966480446925,
+          "value": 0.006666666666666667,
+          "selected": false
+        },
+        {
+          "id": 291,
+          "t": 733.2402234636872,
+          "value": 0.04000000000000002,
+          "selected": false
+        },
+        {
+          "id": 292,
+          "t": 856.8435754189944,
+          "value": 0.046666666666667106,
+          "selected": false
+        },
+        {
+          "id": 293,
+          "t": 980.4469273743018,
+          "value": 0.0066666666666664945,
+          "selected": false
+        },
+        {
+          "id": 294,
+          "t": 1435.0558659217872,
+          "value": 0.006666666666666667,
+          "selected": false
+        },
+        {
+          "id": 295,
+          "t": 1768.156424581005,
+          "value": 0.020000000000000448,
+          "selected": false
+        },
+        {
+          "id": 296,
+          "t": 1868.7150837988825,
+          "value": 0.02000000000000013,
+          "selected": false
+        },
+        {
+          "id": 297,
+          "t": 2015.3631284916196,
+          "value": 0.0066666666666664945,
+          "selected": false
+        },
+        {
+          "id": 298,
+          "t": 2474.1620111731845,
+          "value": 2.905661822261152e-16,
+          "selected": true
+        }
+      ]
+    },
+    "maxValue": {
+      "valueScale": [
+        0,
+        1
+      ],
+      "data": [
+        {
+          "id": 300,
+          "t": 1500,
+          "value": 1,
+          "selected": false
+        }
+      ]
+    },
+    "minValue": {
+      "valueScale": [
+        0,
+        1
+      ],
+      "data": [
+        {
+          "id": 301,
+          "t": 1500,
+          "value": 0,
+          "selected": false
+        }
+      ]
+    }
+  }
+}
