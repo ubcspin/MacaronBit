@@ -16,7 +16,7 @@ body {
 
 
 .crumbFile {
-    background-color: #fdd; 
+    background-color: #faa; 
     border: none;
     color: black;
     padding: 15px 32px;
@@ -29,12 +29,14 @@ body {
 }
 
 .crumbFile:hover {
-    background-color: #fff; /*white*/
-    color: black;
+    background-color: #c88; 
+    color: white;
+    text-decoration: none;
 }
-.crumbFile:after {
-    background-color: #000; /*white*/
-    color: black;
+.crumbFile:active {
+    background-color: #a55; 
+    color: white;
+    text-decoration: none;
 }
 
 .hidden {
@@ -96,7 +98,7 @@ a:active {
     background: -webkit-linear-gradient(top,  #000 0%,#ffcc8e 100%); /* Chrome10+,Safari5.1+ #ffcc8e */
     background: -o-linear-gradient(top,  #ffc170 0%,#ffcc8e 100%); /* Opera 11.10+ */
     background: -ms-linear-gradient(top,  #ffc170 0%,#ffcc8e 100%); /* IE10+ */
-    background: linear-gradient(to bottom,  #faa 0%,#faa 100%); /* W3C */
+    background: linear-gradient(to bottom,  #fff 0%,#fff 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#faa', endColorstr='#faa',GradientType=0 ); /* IE6-9 */
 
 }

@@ -6,3 +6,4 @@ package.json
 todo
 recordings/1*_recording.csv
 recordings/1*_parameters.json
+recordings/*.txt

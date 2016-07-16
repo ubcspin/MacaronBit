@@ -315,6 +315,21 @@ function main() {
             log('Rendering...');
             render();
         });
+        socket.on('saveBehaviourArray', function(array){
+            var time = new Date().getTime();
+            var longTime = new Date()
+            var introMsg = "Ah, hello Sazi, Lucia, Paul, or Laura! This is David, talking to you from The Past using the miracle of modern technology! Perhaps you were wondering what sequence the behaviour buttons were ordered in on: "+longTime+". Lucky for you, I have compiled this handy log. Please enjoy: \n    "
+            var lifeSavingString = ""
+            console.log('saveBehaviourArray event called!');
+            for (var i = 0; i < array.length; i++) {
+                lifeSavingString = lifeSavingString+i+": "+"{ "+array[i].title+" : "+array[i].filename+" }  \n    "
+            };
+            lifeSavingString = introMsg+lifeSavingString;
+            fs.writeFile('recordings/'+time+'_behaviourOrderLog.txt', lifeSavingString, function (err) {
+                  if (err) return console.log(err);
+                  console.log('saveBehaviourArray did not write'+err);
+                });
+        });
         socket.on('load_setPoints', function(filename){
             console.log('loading set points with', filename)
             if (filename == undefined){

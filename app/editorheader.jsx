@@ -85,6 +85,8 @@ var EditorHeader = React.createClass({
 		this.setState({socket:socket});
 		socket.on("sendCrumb",function(crumbFile){
 			this.renderCrumb(crumbFile)}.bind(this));
+		socket.emit("saveBehaviourArray",shuffledBehaviours)
+		
 
 	},
 	mixins : [
@@ -120,7 +122,10 @@ var EditorHeader = React.createClass({
 	},
 
 
-
+	logButtonOrder: function(array){
+		console.log("logButtonOrder called");
+		this.emit("saveBehaviourArray",array).bind(this);
+	},
 
 	renderCrumb: function(crumbData) {
 		console.log("renderCrum called! ")
