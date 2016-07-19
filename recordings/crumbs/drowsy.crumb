@@ -1,0 +1,109 @@
+{
+  "duration": 3000,
+  "selected": true,
+  "selectedTimeRange": {
+    "active": false,
+    "time1": 0,
+    "time2": 0
+  },
+  "parameters": {
+    "position": {
+      "valueScale": [
+        0,
+        1
+      ],
+      "data": [
+        {
+          "id": 9,
+          "t": 0,
+          "value": 0.32666666666666644,
+          "selected": false
+        },
+        {
+          "id": 1,
+          "t": 553.0726256983239,
+          "value": 0.9999999999999999,
+          "selected": false
+        },
+        {
+          "id": 25,
+          "t": 1332.4022346368715,
+          "value": 0.4,
+          "selected": false
+        },
+        {
+          "id": 26,
+          "t": 1363.826815642458,
+          "value": 0.9933333333333336,
+          "selected": false
+        },
+        {
+          "id": 31,
+          "t": 1470.6703910614526,
+          "value": 0.8466666666666666,
+          "selected": false
+        },
+        {
+          "id": 30,
+          "t": 1562.849162011173,
+          "value": 0.9933333333333332,
+          "selected": false
+        },
+        {
+          "id": 10,
+          "t": 1713.6871508379875,
+          "value": 0.8333333333333338,
+          "selected": false
+        },
+        {
+          "id": 32,
+          "t": 2960.195530726257,
+          "value": 0.12666666666666704,
+          "selected": true
+        }
+      ]
+    },
+    "random": {
+      "valueScale": [
+        0,
+        1
+      ],
+      "data": [
+        {
+          "id": 2,
+          "t": 1500,
+          "value": 0,
+          "selected": false
+        }
+      ]
+    },
+    "maxValue": {
+      "valueScale": [
+        0,
+        1
+      ],
+      "data": [
+        {
+          "id": 3,
+          "t": 1500,
+          "value": 1,
+          "selected": false
+        }
+      ]
+    },
+    "minValue": {
+      "valueScale": [
+        0,
+        1
+      ],
+      "data": [
+        {
+          "id": 3,
+          "t": 1500,
+          "value": 0,
+          "selected": false
+        }
+      ]
+    }
+  }
+}

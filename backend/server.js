@@ -167,6 +167,16 @@ function importParameters(paramatersFile){
     parameters = jsonContent;
 }
 
+function importCrumbs(file1){
+
+    var content = fs.readFileSync(file1,'utf8')
+    console.log("fs.readFileSync output: ", content)
+     var jsonContent = JSON.parse(content)
+     console.log("JSON content: ",jsonContent)
+    io.emit('sendCrumb',jsonContent);
+    //[object ArrayBuffer]
+}
+
 function log() {
     var out = []
     var r = Array.from(arguments)
@@ -265,7 +275,7 @@ function main() {
     // Server setup
     //------------------------------------------------------------------------------
     server.listen(3000);
-
+    
     app.use("/thirdparty", express.static(__dirname + '/thirdparty'));
     app.use("/recordings", express.static(__dirname+'/recordings'));
     app.use(express.static(__dirname + '/js'));
@@ -285,6 +295,7 @@ function main() {
     // json poop
     //------------------------------------------------------------------------------
     importParameters("recordings/test_parameters.json")
+
     console.log('default parameters: ',parameters)
     ///////////////////////////////////////////////////////////
     // Voodle code
@@ -303,6 +314,12 @@ function main() {
     //------------------------------------------------------------------------------
     io.on('connection', function(socket){
         log('User connected.');
+
+        //crumb request
+        socket.on('getCrumb', function(crumbName){
+            importCrumbs("recordings/crumbs/"+crumbName)
+            console.log('get crumb request works!')
+        });
 
         //User disconnects
         socket.on('disconnect', function(){
@@ -336,6 +353,21 @@ function main() {
             console.log('socket render event!')
             log('Rendering...');
             render();
+        });
+        socket.on('saveBehaviourArray', function(array){
+            var time = new Date().getTime();
+            var longTime = new Date()
+            var introMsg = "Ah, hello friend! This is David, talking to you from The Past using the miracle of modern technology! Perhaps you have questions pertaining to the order of behaviour buttons on: "+longTime+". Lucky for you, dear reader, I have compiled this handy log. Please enjoy: \n    [NOTE: if the formatting of this file is truncated you may need to open it in a program like Sublime Text, or Apple's award-winning TextEdit]\n    "
+            var lifeSavingString = ""
+            console.log('saveBehaviourArray event called!');
+            for (var i = 0; i < array.length; i++) {
+                lifeSavingString = lifeSavingString+i+": "+"{ "+array[i].title+" : "+array[i].filename+" }  \n    "
+            };
+            lifeSavingString = introMsg+lifeSavingString;
+            fs.writeFile('recordings/'+time+'_behaviourOrderLog.txt', lifeSavingString, function (err) {
+                  if (err) return console.log(err);
+                  
+                });
         });
         socket.on('load_setPoints', function(filename){
             console.log('loading set points with', filename)

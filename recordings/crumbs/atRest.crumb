@@ -1,0 +1,121 @@
+{
+  "duration": 3000,
+  "selectedTimeRange": {
+    "active": false,
+    "time1": 0,
+    "time2": 0
+  },
+  "selected": true,
+  "parameters": {
+    "position": {
+      "valueScale": [
+        0,
+        1
+      ],
+      "data": [
+        {
+          "id": 883,
+          "t": 6.284916201117318,
+          "value": 0.0004412841796875011,
+          "selected": false
+        },
+        {
+          "id": 884,
+          "t": 726.6648044692738,
+          "value": 0.6836581056744486,
+          "selected": false
+        },
+        {
+          "id": 885,
+          "t": 890.3631284916202,
+          "value": 0.76,
+          "selected": false
+        },
+        {
+          "id": 886,
+          "t": 1083.6648044692738,
+          "value": 0.6796370941613724,
+          "selected": false
+        },
+        {
+          "id": 887,
+          "t": 1380.7653631284916,
+          "value": 0.2696352576187523,
+          "selected": false
+        },
+        {
+          "id": 888,
+          "t": 1818.4357541899442,
+          "value": 0.2404412841796877,
+          "selected": false
+        },
+        {
+          "id": 889,
+          "t": 2455.016759776536,
+          "value": 0.7103247723411155,
+          "selected": false
+        },
+        {
+          "id": 890,
+          "t": 2618.7150837988825,
+          "value": 0.7866666666666668,
+          "selected": false
+        },
+        {
+          "id": 891,
+          "t": 2812.016759776536,
+          "value": 0.7063037608280393,
+          "selected": false
+        },
+        {
+          "id": 892,
+          "t": 2999.999999999999,
+          "value": 0.33377461751302095,
+          "selected": true
+        }
+      ]
+    },
+    "random": {
+      "valueScale": [
+        0,
+        1
+      ],
+      "data": [
+        {
+          "id": 894,
+          "t": 1500,
+          "value": 0,
+          "selected": false
+        }
+      ]
+    },
+    "maxValue": {
+      "valueScale": [
+        0,
+        1
+      ],
+      "data": [
+        {
+          "id": 895,
+          "t": 1500,
+          "value": 1,
+          "selected": false
+        }
+      ]
+    },
+    "minValue": {
+      "valueScale": [
+        0,
+        1
+      ],
+      "data": [
+        {
+          "id": 896,
+          "t": 1500,
+          "value": 0,
+          "selected": false
+        }
+      ]
+    }
+  }
+}

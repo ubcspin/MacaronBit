@@ -1,0 +1,115 @@
+{
+  "duration": 3000,
+  "selected": true,
+  "selectedTimeRange": {
+    "active": false,
+    "time1": 0,
+    "time2": 0
+  },
+  "parameters": {
+    "position": {
+      "valueScale": [
+        0,
+        1
+      ],
+      "data": [
+        {
+          "id": 10,
+          "t": 7.105427357601002e-15,
+          "value": 0.40666666666666706,
+          "selected": false
+        },
+        {
+          "id": 9,
+          "t": 310.05586592178776,
+          "value": 0.8066666666666665,
+          "selected": false
+        },
+        {
+          "id": 11,
+          "t": 756.2849162011174,
+          "value": 0.40666666666666706,
+          "selected": false
+        },
+        {
+          "id": 12,
+          "t": 1066.3407821229052,
+          "value": 0.8066666666666665,
+          "selected": false
+        },
+        {
+          "id": 13,
+          "t": 1497.9050279329608,
+          "value": 0.40666666666666706,
+          "selected": false
+        },
+        {
+          "id": 14,
+          "t": 1807.9608938547485,
+          "value": 0.8066666666666665,
+          "selected": false
+        },
+        {
+          "id": 15,
+          "t": 2394.5530726256984,
+          "value": 0.40666666666666706,
+          "selected": false
+        },
+        {
+          "id": 16,
+          "t": 2704.608938547486,
+          "value": 0.8066666666666665,
+          "selected": false
+        },
+        {
+          "id": 17,
+          "t": 3000,
+          "value": 0.5266666666666667,
+          "selected": false
+        }
+      ]
+    },
+    "random": {
+      "valueScale": [
+        0,
+        1
+      ],
+      "data": [
+        {
+          "id": 2,
+          "t": 1458.1005586592178,
+          "value": 0,
+          "selected": false
+        }
+      ]
+    },
+    "maxValue": {
+      "valueScale": [
+        0,
+        1
+      ],
+      "data": [
+        {
+          "id": 3,
+          "t": 1500,
+          "value": 1,
+          "selected": false
+        }
+      ]
+    },
+    "minValue": {
+      "valueScale": [
+        0,
+        1
+      ],
+      "data": [
+        {
+          "id": 3,
+          "t": 1500,
+          "value": 0,
+          "selected": false
+        }
+      ]
+    }
+  }
+}

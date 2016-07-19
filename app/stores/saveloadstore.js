@@ -39,7 +39,9 @@ var saveLoadStore = Reflux.createStore({
 
 		reader.onload = function(e) {
 			var data = reader.result;
+			console.log("here's the sexy ass result", data)
 			LogStore.actions.log("LOAD_"+data);
+			console.log('data: ',data)
 			VTIconStore.actions.setVTIcon(JSON.parse(data), "main");
 		};
 

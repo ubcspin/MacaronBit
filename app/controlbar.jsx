@@ -18,7 +18,7 @@ var ControlBar = React.createClass({
 
 	getDefaultProps: function() {
 	    return {
-	      width:'100%',
+	      width:'0%',
 	      background:'lightgrey',
 	      fontSize: "20pt",
 
@@ -88,10 +88,10 @@ var ControlBar = React.createClass({
 			<div className="controlbar" style={divStyle}>
 				<div className="time-control" style={timeControlStyle}>
 					
-					 <a class="btn" href="#"><i onClick={this._onSkipBackwardClick} className="fa fa-step-backward" style={buttonStyle}></i></a>
-					 <a class="btn" href="#"><i onClick={this._onPlayClick} className={iconText} style={buttonStyle}></i></a>
-					 <a class="btn" href="#"><i onClick={this._onSkipForwardClick} className="fa fa-step-forward" style={buttonStyle}></i></a>
-					 <a class="btn" href="#"><span onClick={this._onMuteClick} className="unselectable mute"><input type="checkbox" checked={this.props.mute}/>Mute</span></a>
+					 <a class="btn" href="#"><i onClick={this._onSkipBackwardClick}></i></a>
+					 <a class="btn" href="#"><i onClick={this._onPlayClick}></i></a>
+					 <a class="btn" href="#"><i onClick={this._onSkipForwardClick}></i></a>
+					 
 				</div>	
 			</div>
 			);

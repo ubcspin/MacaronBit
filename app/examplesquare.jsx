@@ -22,8 +22,8 @@ var ExampleSquare = React.createClass({
 	    return {
 	//       border:2,
 	//       selectedBorder:10
-	       width:100,
-	       height:50,
+	       width:0,
+	       height:0,
 	      visColor:'#FFDDAD',
 	      // background:"#FAFAFA",
 	      resolution:2000,

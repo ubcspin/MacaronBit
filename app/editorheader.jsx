@@ -14,7 +14,7 @@ var UserAgreement = require('./useragreement.jsx');
 var UserInstructions = require('./userinstructions.jsx');
 
 
-var io = require('./../thirdparty/socket/socket.io.js');
+var io = require('socket.io-client/socket.io');
 
 var FileInput = require('react-file-input');
 
@@ -22,9 +22,55 @@ var FileInput = require('react-file-input');
 var VTIconStore = require('./stores/vticonstore.js');
 
 
+
+var unshuffledBehaviours = [{title:"Behaviour 1",filename:"atEase.crumb"},
+							{title:"Behaviour 2",filename:"atRest.crumb"},
+							{title:"Behaviour 3",filename:"attentive.crumb"},
+							{title:"Behaviour 4",filename:"bored.crumb"},
+							{title:"Behaviour 5",filename:"calm.crumb"},
+							{title:"Behaviour 6",filename:"determined.crumb"},
+							{title:"Behaviour 7",filename:"droopy.crumb"},
+							{title:"Behaviour 8",filename:"drowsy.crumb"},
+							{title:"Behaviour 9",filename:"dull.crumb"},
+							{title:"Behaviour 10",filename:"enthusiastic.crumb"},
+							{title:"Behaviour 11",filename:"excited.crumb"},
+							{title:"Behaviour 12",filename:"guilty.crumb"},
+							{title:"Behaviour 13",filename:"hostile.crumb"},
+							{title:"Behaviour 14",filename:"nervous.crumb"},
+							{title:"Behaviour 15",filename:"proud.crumb"},
+							{title:"Behaviour 16",filename:"relaxed.crumb"},
+							{title:"Behaviour 17",filename:"scared.crumb"},
+							{title:"Behaviour 18",filename:"serene.crumb"},
+							{title:"Behaviour 19",filename:"sluggish.crumb"},
+							{title:"Behaviour 20",filename:"upset.crumb"}]
+
+//randomizes an array
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
+
+var shuffledBehaviours = shuffle(unshuffledBehaviours);
+
+
 var EditorHeader = React.createClass({
 
-	
+
 
 	getInitialState: function(){
 		return{
@@ -37,6 +83,10 @@ var EditorHeader = React.createClass({
 	componentDidMount: function() {
 		var socket = io.connect("http://localhost:3000");
 		this.setState({socket:socket});
+		socket.on("sendCrumb",function(crumbFile){
+			this.renderCrumb(crumbFile)}.bind(this));
+		socket.emit("saveBehaviourArray",shuffledBehaviours)
+		
 
 	},
 	mixins : [
@@ -49,22 +99,39 @@ var EditorHeader = React.createClass({
 			},
 
 	getDefaultProps: function() {
+	    
 	    return {
 	    	displayAnimation:false,
 	    	displayInterfaceMode:false, //was false
-	    	displaySaveButton:true,
+	    	displaySaveButton:false,
 	    	displayStartButton:false,
 			displayTestButton:false,
-			displayRenderButton:true,
-			displayStopButton:true,
+			displayRenderButton:false,
+			displayStopButton:false,
 			displayResetButton:false,
 			displayGetSetPointsButton:false,
-			displayLoadVoodleButton:true,
+			displayLoadVoodleButton:false,
 			uploadFileID:"uploadedFile",
-			uploadVoodleFileID: "voodleFile"
+			uploadVoodleFileID: "voodleFile",
+			behaviours : shuffledBehaviours
+			
+
 
 
 	    }
+	},
+
+
+	logButtonOrder: function(array){
+		console.log("logButtonOrder called");
+		this.emit("saveBehaviourArray",array).bind(this);
+	},
+
+	renderCrumb: function(crumbData) {
+		console.log("renderCrum called! ")
+
+			VTIconStore.actions.setVTIcon(crumbData, "main");
+			this._onRenderClick();
 	},
 
 	_onAnimationChange: function(val) {
@@ -89,15 +156,18 @@ var EditorHeader = React.createClass({
 	},
 
 	_onLoadClick : function(e) {
-		
-
 		var uploadedFiles = document.getElementById(this.props.uploadFileID);
+		console.log("uploadedFiles: ",uploadedFiles.value)
 		console.log('normal _onLoadClick uploaded file: ',uploadedFiles.files[0].name)
 		if (uploadedFiles.files.length > 0) {
+			console.log("Hey buddy here's the uploaded file you asked for thanks talk soon: ", uploadedFiles.files[0]);
 			SaveLoadStore.actions.loadMacaronFile(uploadedFiles.files[0]);
-
 		}
 		uploadedFiles.value = [];
+	},
+	_loadCrumb : function(crumbFile) {
+		this.emit('getCrumb',crumbFile);
+		
 	},
 
 	_onTestClick : function(e) {
@@ -237,10 +307,10 @@ var EditorHeader = React.createClass({
 		}
 
 		var renderButton = <span />
-		if (this.props.displayRenderButton)
-		{
-			renderButton = (<button onClick={this._onRenderClick}>Render</button>);
+		if (this.props.displayRenderButton){
+			var renderButton = <button className="crumbFile" onClick={this._onRenderClick}>Render</button>
 		}
+
 
 		var stopButton = <span />
 		if (this.props.displayStopButton)
@@ -270,6 +340,10 @@ var EditorHeader = React.createClass({
 					</span>);
 		}
 
+		var behaviourComponents = this.props.behaviours.map(behaviour => {
+    	        return <a className="crumbFile" onClick={this._loadCrumb.bind(this,behaviour.filename)}>{behaviour.title}</a>;
+    	    });
+
 		return (
 			
 			<div>
@@ -277,9 +351,9 @@ var EditorHeader = React.createClass({
 			
 
 			<div className="header" style={headerStyle}>
+				<center>
+				<span className="title unselectable"> Behaviour player </span><p /></center>
 				
-				<span className="title unselectable"> Editor </span>
-			
 				{interfaceModeDisplay}
 				{saveButton}
 				{loadButton}
@@ -290,9 +364,12 @@ var EditorHeader = React.createClass({
 				{resetButton}
 				{getSetPointsButton}
 				{loadVoodleButton}
-				
+				{behaviourComponents}
+
+		
 			</div>
 				
+		
 		</div>
 			
 			);
