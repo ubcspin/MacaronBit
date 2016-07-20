@@ -23,26 +23,26 @@ var VTIconStore = require('./stores/vticonstore.js');
 
 
 
-var unshuffledBehaviours = [{title:"Behaviour 1",filename:"atEase.crumb"},
-							{title:"Behaviour 2",filename:"atRest.crumb"},
-							{title:"Behaviour 3",filename:"attentive.crumb"},
-							{title:"Behaviour 4",filename:"bored.crumb"},
-							{title:"Behaviour 5",filename:"calm.crumb"},
-							{title:"Behaviour 6",filename:"determined.crumb"},
-							{title:"Behaviour 7",filename:"droopy.crumb"},
-							{title:"Behaviour 8",filename:"drowsy.crumb"},
-							{title:"Behaviour 9",filename:"dull.crumb"},
-							{title:"Behaviour 10",filename:"enthusiastic.crumb"},
-							{title:"Behaviour 11",filename:"excited.crumb"},
-							{title:"Behaviour 12",filename:"guilty.crumb"},
-							{title:"Behaviour 13",filename:"hostile.crumb"},
-							{title:"Behaviour 14",filename:"nervous.crumb"},
-							{title:"Behaviour 15",filename:"proud.crumb"},
-							{title:"Behaviour 16",filename:"relaxed.crumb"},
-							{title:"Behaviour 17",filename:"scared.crumb"},
-							{title:"Behaviour 18",filename:"serene.crumb"},
-							{title:"Behaviour 19",filename:"sluggish.crumb"},
-							{title:"Behaviour 20",filename:"upset.crumb"}]
+var unshuffledBehaviours = [{title:"Behaviour b91",filename:"atEase.crumb"},
+							{title:"Behaviour zvn",filename:"atRest.crumb"},
+							{title:"Behaviour cbn",filename:"attentive.crumb"},
+							{title:"Behaviour km4",filename:"bored.crumb"},
+							{title:"Behaviour 2f2",filename:"calm.crumb"},
+							{title:"Behaviour 54n",filename:"determined.crumb"},
+							{title:"Behaviour 28l ",filename:"droopy.crumb"},
+							{title:"Behaviour 2fp ",filename:"drowsy.crumb"},
+							{title:"Behaviour agr ",filename:"dull.crumb"},
+							{title:"Behaviour zoq ",filename:"enthusiastic.crumb"},
+							{title:"Behaviour bua ",filename:"excited.crumb"},
+							{title:"Behaviour ktk ",filename:"guilty.crumb"},
+							{title:"Behaviour ne9 ",filename:"hostile.crumb"},
+							{title:"Behaviour h57 ",filename:"nervous.crumb"},
+							{title:"Behaviour 8tl ",filename:"proud.crumb"},
+							{title:"Behaviour wvj ",filename:"relaxed.crumb"},
+							{title:"Behaviour xe0 ",filename:"scared.crumb"},
+							{title:"Behaviour ke7 ",filename:"serene.crumb"},
+							{title:"Behaviour 6uw ",filename:"sluggish.crumb"},
+							{title:"Behaviour ud2 ",filename:"upset.crumb"}]
 
 //randomizes an array
 function shuffle(array) {
