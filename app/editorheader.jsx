@@ -86,7 +86,7 @@ var EditorHeader = React.createClass({
 		socket.on("sendCrumb",function(crumbFile){
 			this.renderCrumb(crumbFile)}.bind(this));
 		socket.emit("saveBehaviourArray",shuffledBehaviours)
-		this._loadCrumb.bind(this,"nothing");
+
 		
 
 	},
@@ -353,7 +353,7 @@ var EditorHeader = React.createClass({
 
 			<div className="header" style={headerStyle}>
 				<center>
-				<span className="title unselectable"> Behaviour player </span><p /></center>
+				<span className="title unselectable" onload={this._loadCrumb.bind(this,"nothing")}> Behaviour player </span><p /></center>
 				
 				{interfaceModeDisplay}
 				{saveButton}

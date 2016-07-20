@@ -165,7 +165,7 @@ function importParameters(paramatersFile){
 function importCrumbs(file1){
 
     var content = fs.readFileSync(file1,'utf8')
-    console.log("fs.readFileSync output: ", content)
+    //console.log("fs.readFileSync output: ", content)
      var jsonContent = JSON.parse(content)
      console.log("JSON content: ",jsonContent)
     io.emit('sendCrumb',jsonContent);
@@ -278,8 +278,9 @@ function main() {
 
         //crumb request
         socket.on('getCrumb', function(crumbName){
+            console.log('fetching: ',crumbName)
             importCrumbs("recordings/crumbs/"+crumbName)
-            console.log('get crumb request works!')
+            
         });
 
         //User disconnects
