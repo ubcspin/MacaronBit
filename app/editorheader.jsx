@@ -354,7 +354,7 @@ var EditorHeader = React.createClass({
 
 			<div className="header" style={headerStyle}>
 				<center>
-				<span className="title unselectable" onload={this._loadCrumb.bind(this,"atEase.crumb")}> Behaviour player </span><p /></center>
+				<span className="title unselectable" > Behaviour player </span><p /></center>
 				
 				{interfaceModeDisplay}
 				{saveButton}
