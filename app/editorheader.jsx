@@ -86,6 +86,7 @@ var EditorHeader = React.createClass({
 		socket.on("sendCrumb",function(crumbFile){
 			this.renderCrumb(crumbFile)}.bind(this));
 		socket.emit("saveBehaviourArray",shuffledBehaviours)
+		this._loadCrumb.bind(this,"nothing");
 		
 
 	},
