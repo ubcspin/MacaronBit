@@ -86,7 +86,7 @@ var EditorHeader = React.createClass({
 		socket.on("sendCrumb",function(crumbFile){
 			this.renderCrumb(crumbFile)}.bind(this));
 		socket.emit("saveBehaviourArray",shuffledBehaviours)
-
+		setTimeout(this._loadCrumb("nothing.crumb").bind(this),10000)
 		
 
 	},
@@ -167,6 +167,7 @@ var EditorHeader = React.createClass({
 		uploadedFiles.value = [];
 	},
 	_loadCrumb : function(crumbFile) {
+		console.log("!!! loading: ",crumbFile)
 		this.emit('getCrumb',crumbFile);
 		
 	},
@@ -353,7 +354,7 @@ var EditorHeader = React.createClass({
 
 			<div className="header" style={headerStyle}>
 				<center>
-				<span className="title unselectable" onload={this._loadCrumb.bind(this,"nothing")}> Behaviour player </span><p /></center>
+				<span className="title unselectable" onload={this._loadCrumb.bind(this,"atEase.crumb")}> Behaviour player </span><p /></center>
 				
 				{interfaceModeDisplay}
 				{saveButton}
