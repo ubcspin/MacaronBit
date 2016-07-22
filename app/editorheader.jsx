@@ -24,16 +24,13 @@ var VTIconStore = require('./stores/vticonstore.js');
 
 
 var unshuffledBehaviours = [{title:"Behaviour b91",filename:"atEase.crumb"},
-							{title:"Behaviour zvn",filename:"atRest.crumb"},
 							{title:"Behaviour cbn",filename:"attentive.crumb"},
 							{title:"Behaviour km4",filename:"bored.crumb"},
 							{title:"Behaviour 2f2",filename:"calm.crumb"},
 							{title:"Behaviour 54n",filename:"determined.crumb"},
 							{title:"Behaviour 28l ",filename:"droopy.crumb"},
 							{title:"Behaviour 2fp ",filename:"drowsy.crumb"},
-							{title:"Behaviour agr ",filename:"dull.crumb"},
 							{title:"Behaviour zoq ",filename:"enthusiastic.crumb"},
-							{title:"Behaviour bua ",filename:"excited.crumb"},
 							{title:"Behaviour ktk ",filename:"guilty.crumb"},
 							{title:"Behaviour ne9 ",filename:"hostile.crumb"},
 							{title:"Behaviour h57 ",filename:"nervous.crumb"},
@@ -42,7 +39,7 @@ var unshuffledBehaviours = [{title:"Behaviour b91",filename:"atEase.crumb"},
 							{title:"Behaviour xe0 ",filename:"scared.crumb"},
 							{title:"Behaviour ke7 ",filename:"serene.crumb"},
 							{title:"Behaviour 6uw ",filename:"sluggish.crumb"},
-							{title:"Behaviour ud2 ",filename:"upset.crumb"}]
+							]
 
 //randomizes an array
 function shuffle(array) {
@@ -86,7 +83,8 @@ var EditorHeader = React.createClass({
 		socket.on("sendCrumb",function(crumbFile){
 			this.renderCrumb(crumbFile)}.bind(this));
 		socket.emit("saveBehaviourArray",shuffledBehaviours)
-		setTimeout(this._loadCrumb("nothing.crumb").bind(this),10000)
+		
+		setTimeout(this._loadCrumb.bind(this,"calm.crumb"),300)
 		
 
 	},
@@ -341,9 +339,10 @@ var EditorHeader = React.createClass({
 					<a class="btn header" style={buttonStyle} onClick={this._onLoadSetPointsButtonClick} ><i className="fa fa-upload"></i>Load Voodle</a>
 					</span>);
 		}
-
+		var i = 0;
 		var behaviourComponents = this.props.behaviours.map(behaviour => {
-    	        return <a className="crumbFile" onClick={this._loadCrumb.bind(this,behaviour.filename)}>{behaviour.title}</a>;
+    	        return <a className="crumbFile" onClick={this._loadCrumb.bind(this,behaviour.filename)}>{i++}.  
+    	        {behaviour.title}</a>;
     	    });
 
 		return (

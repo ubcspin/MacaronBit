@@ -1,0 +1,25 @@
+Hello friends,
+
+Here is the mapping between hash values and crumb files:
+
+{title:"Behaviour b91",filename:"atEase.crumb"},
+{title:"Behaviour cbn",filename:"attentive.crumb"},
+{title:"Behaviour km4",filename:"bored.crumb"},
+{title:"Behaviour 2f2",filename:"calm.crumb"},
+{title:"Behaviour 54n",filename:"determined.crumb"},
+{title:"Behaviour 28l ",filename:"droopy.crumb"},
+{title:"Behaviour 2fp ",filename:"drowsy.crumb"},
+{title:"Behaviour zoq ",filename:"enthusiastic.crumb"},
+{title:"Behaviour ktk ",filename:"guilty.crumb"},
+{title:"Behaviour ne9 ",filename:"hostile.crumb"},
+{title:"Behaviour h57 ",filename:"nervous.crumb"},
+{title:"Behaviour 8tl ",filename:"proud.crumb"},
+{title:"Behaviour wvj ",filename:"relaxed.crumb"},
+{title:"Behaviour xe0 ",filename:"scared.crumb"},
+{title:"Behaviour ke7 ",filename:"serene.crumb"},
+{title:"Behaviour 6uw ",filename:"sluggish.crumb"}
+
+Have a great day, and hey...remember to have fun!
+
+Sincerely,
+David

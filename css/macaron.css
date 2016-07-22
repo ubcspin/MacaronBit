@@ -14,10 +14,21 @@ body {
     user-select: none;
 }
 
+.listItem {
 
+    border: none;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    font-size: 16px;
+    margin-left:20px;
+    margin-right: 20px;
+    margin-top:20px;
+    cursor:pointer;
+}
 
 .crumbFile {
-
     background-color: #faa; 
     border: none;
     color: black;
@@ -25,11 +36,13 @@ body {
     text-align: center;
     text-decoration: none;
     display: block;
+    width: 700px;
     font-size: 16px;
     margin-left:20px;
     margin-right: 20px;
     margin-top:20px;
     cursor:pointer;
+    vertical-align: center;
 }
 
 
