@@ -339,7 +339,7 @@ var EditorHeader = React.createClass({
 					<a class="btn header" style={buttonStyle} onClick={this._onLoadSetPointsButtonClick} ><i className="fa fa-upload"></i>Load Voodle</a>
 					</span>);
 		}
-		var i = 0;
+		var i = 1;
 		var behaviourComponents = this.props.behaviours.map(behaviour => {
     	        return <a className="crumbFile" onClick={this._loadCrumb.bind(this,behaviour.filename)}>{i++}.  
     	        {behaviour.title}</a>;
