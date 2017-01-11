@@ -112,7 +112,7 @@ Note that there are two packages for windows and mac users: "package[mac use thi
 
 Make sure the Arduino is loaded up with StandardFirmata (Examples > Firmata > Standard Firmata). The Bit should be plugged in as follows:
 
-- Data pin (usually orange or yellow) : 9
+- Data pin (usually orange or yellow) : 10
 - High/positive (usually red) : 5V
 - Low/negative/ground (usually black or brown) : any GND
 
