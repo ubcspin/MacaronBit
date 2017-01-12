@@ -1,6 +1,6 @@
 import Reflux from 'reflux';
 
-var REQUEST_PARTICIPANT_ID = true;
+var REQUEST_PARTICIPANT_ID = false;
 var REQUEST_ANIMATION_MODE = false;
 var REQUEST_INTERFACE = false;
 
