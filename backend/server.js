@@ -289,7 +289,7 @@ function main() {
     //------------------------------------------------------------------------------
     // json poop
     //------------------------------------------------------------------------------
-    importParameters("../recordings/test_parameters.json")
+    importParameters("./recordings/test_parameters.json")
     console.log('default parameters: ',parameters)
     ///////////////////////////////////////////////////////////
     // Voodle code
@@ -378,7 +378,6 @@ function main() {
         if (filtered.length > 1) {
             boardload(filtered[1].comName); // this is probably stupid...
         } else {
-            console.log("Lotus debug: " + filtered);
             boardload(filtered[0].comName);
         }
         console.log(filtered)
