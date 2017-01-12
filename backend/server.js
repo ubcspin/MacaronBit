@@ -43,7 +43,7 @@ function makepath(msg) {
 
     var scaled_points = [];
     var unscaled_points = [];
-    
+
     var scale_factor = parameters.servoMax - parameters.servoMin
 
     var offset = parameters.servoMin
@@ -73,11 +73,15 @@ function rendered_path(sp,name) {
         rendered_path_example = sp;
     } else if (name=="main") {
         rendered_path_main = sp;
+        rendered_path_example = sp;
+
     }
+    console.log(sp)
 }
 function render() {
     stop_render();
-     console.log('rendered path: ',getMaxOfArray(rendered_path_main),getMinOfArray(rendered_path_main))
+    console.log('rendered path: ',getMaxOfArray(rendered_path_main),getMinOfArray(rendered_path_main))
+    console.log("rendered path", rendered_path_main)
     if (rendered_path_main.length==0 || rendered_path_example.length == 0) {
         log('No path to render yet...');
     }
@@ -86,6 +90,7 @@ function render() {
             timeouts.push(doSetTimeout(i));
         }
     }
+
 }
 
 function stop_render() {
@@ -122,11 +127,11 @@ function processBuffer( inputBuffer ) {
             log('for loop in process()')
         }
         j = (i-parameters.framesPerBuffer)
-        
+
         buffer = inputBuffer.slice(j,i)
-            
+
         if (buffer.length==0){
-           log('buffer length 0')
+            log('buffer length 0')
             break
         }
         renderBuffer(buffer)
@@ -136,29 +141,29 @@ function processBuffer( inputBuffer ) {
 }
 
 function renderBuffer(inputBuffer) {
-        //log('inside renderbuffer')
-        var ampRaw = Math.abs(Math.max.apply(Math, inputBuffer));
+    //log('inside renderbuffer')
+    var ampRaw = Math.abs(Math.max.apply(Math, inputBuffer));
 
-        //start of pitch analysis///////////////////////////////////////////        
-        var pitch = detectPitchAMDF(inputBuffer);
-        
-        if (pitch==null){
-            pitch = 0
-        }
-        else{
-            pitch = functions.mapValue(pitch, 0,1000,0,1)
-        }
-        //end of pitch analysis///////////////////////////////////////////
-        
-        //mixes amplitude and frequency, while scaling it up by scaleFactor.
-        var ampPitchMix = (parameters.gain_for_amp * ampRaw + parameters.gain_for_pitch * pitch) * parameters.scaleFactor;
-        
-        //smooths values
-        //Note: smoothValue is a number between 0-1
-        smoothOut = parameters.smoothValue * smoothOut + (1 - parameters.smoothValue) * ampPitchMix;
-        
-        orgSetPoints.push(smoothOut);
-        
+    //start of pitch analysis///////////////////////////////////////////
+    var pitch = detectPitchAMDF(inputBuffer);
+
+    if (pitch==null){
+        pitch = 0
+    }
+    else{
+        pitch = functions.mapValue(pitch, 0,1000,0,1)
+    }
+    //end of pitch analysis///////////////////////////////////////////
+
+    //mixes amplitude and frequency, while scaling it up by scaleFactor.
+    var ampPitchMix = (parameters.gain_for_amp * ampRaw + parameters.gain_for_pitch * pitch) * parameters.scaleFactor;
+
+    //smooths values
+    //Note: smoothValue is a number between 0-1
+    smoothOut = parameters.smoothValue * smoothOut + (1 - parameters.smoothValue) * ampPitchMix;
+
+    orgSetPoints.push(smoothOut);
+
 }
 
 function importParameters(paramatersFile){
@@ -175,7 +180,7 @@ function log() {
     console.log(" ")
     console.log(repeat(date.length * 4,"=").rainbow)
     console.log(date.rainbow)
-    
+
     r.forEach(function(item){
         console.log(item)
     })
@@ -191,11 +196,11 @@ function repeat(n,l) {
 }
 
 function getMaxOfArray(numArray) {
-  return Math.max.apply(null, numArray);
+    return Math.max.apply(null, numArray);
 }
 
 function getMinOfArray(numArray) {
-  return Math.min.apply(null, numArray);
+    return Math.min.apply(null, numArray);
 }
 
 function mapValue(value, minIn, maxIn, minOut, maxOut){
@@ -212,11 +217,11 @@ function processCsv(csvfile){
 
     var csvStream = csv()
         .on("data", function(d){
-             audioBuffer.push(d[1])
+            audioBuffer.push(d[1])
         })
         .on("end", function(lines){
             //log('audioBuffer: ',audioBuffer)
-            processBuffer(audioBuffer); 
+            processBuffer(audioBuffer);
         });
 
     stream.pipe(csvStream);
@@ -227,7 +232,7 @@ function boardload(portName) {
     // Board setup
     //------------------------------------------------------------------------------
     board = new five.Board({port:portName});
-    
+
     board.on("ready", function() {
         log('board is ready!')
         var standby = new five.Pin(7);
@@ -244,7 +249,7 @@ function boardload(portName) {
         myServo = new five.Servo({
             pin:10,
             center:true,
-            range: [parameters.servoMin,parameters.servoMax] 
+            range: [parameters.servoMin,parameters.servoMax]
         });
 
         board.repl.inject({
@@ -252,7 +257,7 @@ function boardload(portName) {
             servo: myServo
         });
         io.emit('server_message','Ready to start board.');
-            log('Sweep away, my captain.');
+        log('Sweep away, my captain.');
     });
 }
 
@@ -260,7 +265,7 @@ function boardload(portName) {
 // Main
 //----------------------------------------------------------------------------------
 function main() {
-    
+
     //------------------------------------------------------------------------------
     // Server setup
     //------------------------------------------------------------------------------
@@ -271,10 +276,10 @@ function main() {
     app.use(express.static(__dirname + '/js'));
 
     app.get('/', function (req, res) {
-      res.sendfile(__dirname + '/index.html');
-      console.log(__dirname)
+        res.sendFile(__dirname + '/index.html');
+        console.log(__dirname)
     });
-     app.use("/css", express.static(__dirname + '/css'));
+    app.use("/css", express.static(__dirname + '/css'));
 
     var host = server.address().address;
     var port = server.address().port;
@@ -284,17 +289,17 @@ function main() {
     //------------------------------------------------------------------------------
     // json poop
     //------------------------------------------------------------------------------
-    importParameters("recordings/test_parameters.json")
+    importParameters("./recordings/test_parameters.json")
     console.log('default parameters: ',parameters)
     ///////////////////////////////////////////////////////////
     // Voodle code
     ///////////////////////////////////////////////////////////
 
     detectPitchAMDF = new pitchFinder.AMDF({
-            sampleRate:40000,
-            minFrequency:5,
-            maxFrequency:1200
-        });
+        sampleRate:40000,
+        minFrequency:5,
+        maxFrequency:1200
+    });
 ///------legacy box, delete soon-------------------------//
     //processCsv('recordings/1464126410068_recording.csv') //
 ///------------------------------------------------------//
@@ -311,16 +316,16 @@ function main() {
 
         // Test servo motion
         socket.on('test', function(){
-                io.emit('server_message', 'Started arduino sweep.');
-                myMotor.start(255);
+            io.emit('server_message', 'Started arduino sweep.');
+            myMotor.start(255);
             log('Arduino test.');
         });
 
         // Move to degree
         socket.on('degree', function(degree){
-                var d = parseInt(degree);
-                io.emit('server_message', 'Moving to degree ' + degree + ".");
-                myMotor.start(255);
+            var d = parseInt(degree);
+            io.emit('server_message', 'Moving to degree ' + degree + ".");
+            myMotor.start(255);
             log('Moving to degree ' + degree + ".");
         });
 
@@ -343,21 +348,21 @@ function main() {
                 console.log('filename undefined')
             }
             else {
-                
+
                 log('importing new params!')
                 importParameters('recordings/'+filename.split("_")[0]+'_parameters.json')
                 log('params file path: ','recordings/'+filename.split("_")[0]+'_parameters.json')
                 log('processing csv!')
                 console.log("file name:"+filename)
                 processCsv('recordings/'+filename)
-                
+
             }
         });
         socket.on('get_setPoints', function(filename){
-           
-                io.emit('send_setPoints', orgSetPoints);
-           
-           });
+
+            io.emit('send_setPoints', orgSetPoints);
+
+        });
     });
 
     //------------------------------------------------------------------------------
@@ -368,7 +373,7 @@ function main() {
             // SerialPort(path,options,openImmediately)
             var srlport = new serialPort.SerialPort(port.comName,{},false)
             return  (port.comName.slice(0,11) == '/dev/cu.usb') &&
-                    (!srlport.isOpen()) ? true : false;
+            (!srlport.isOpen()) ? true : false;
         })
         if (filtered.length > 1) {
             boardload(filtered[1].comName); // this is probably stupid...
