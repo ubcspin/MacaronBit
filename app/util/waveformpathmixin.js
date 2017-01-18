@@ -67,6 +67,7 @@ var WaveformPathMixin = {
 			if (data[i].t == t)
 			{
 				rv = data[i].value;
+				console.log('t matches')
 			}
 			else if (data[i].t < t) 
 			{
@@ -164,6 +165,7 @@ var WaveformPathMixin = {
 
 	},
 	// PB add --------------------------------------------------------------------------------
+	// resolution means temporal resolution
 	computePositionPath(vticon, scaleX, scaleY, resolution) {
 		if (this._iconChanged(vticon))
 		{
@@ -189,9 +191,20 @@ var WaveformPathMixin = {
 					if (paramName in vticon.parameters) {
 						var interpolatedKeyframeValue = this.interpolateParameter(paramName, t_in_ms, vticon)
 						var fn = params.getParameters()[paramName].fun
+						if (paramName == 'smooth') {
+							var prev_t_in_ms = (i-200)/resolution*vticon.duration;
+							var previousOutput = output
+							if (prev_t_in_ms in params.getParameters()['smooth'].pointValues) {
+								 previousOutput = params.getParameters()['smooth'].pointValues[prev_t_in_ms]
+							}
+							output = params.getParameters()[paramName].fun(output, previousOutput, interpolatedKeyframeValue)
+						}
+						else {
+							output = params.getParameters()[paramName].fun(output,interpolatedKeyframeValue)
+						}
 						output = params.getParameters()[paramName].fun(output,interpolatedKeyframeValue)
+						params.getParameters()['smooth'].pointValues[t_in_ms] = output
 					}
-
 				}.bind(this))
 				visPoints.push ( [t_in_ms, output]);
 			}

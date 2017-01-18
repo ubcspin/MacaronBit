@@ -50,8 +50,20 @@ function Parameters() {
 									}
 								}
 							},
+
+							smooth : {
+								valueScale:[0,1],
+								data : [{id:5, t:1500, value:0, selected:false}],
+								fun: function(output, previousTimeOutput, currentParamValue) {
+									if (currentParamValue == 0) {
+										return output
+									}
+									return (output + previousTimeOutput)/2
+								},
+								pointValues: {}
+							},
 				}
- 
+
 }
 // class methods
 Parameters.prototype.getParameters = function() {
