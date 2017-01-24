@@ -189,7 +189,20 @@ var WaveformPathMixin = {
 					if (paramName in vticon.parameters) {
 						var interpolatedKeyframeValue = this.interpolateParameter(paramName, t_in_ms, vticon)
 						var fn = params.getParameters()[paramName].fun
-						output = params.getParameters()[paramName].fun(output,interpolatedKeyframeValue)
+
+						if (paramName === 'smooth') {
+							var prev_t_in_ms = (i - 2) / resolution * vticon.duration;
+							var previousOutput = output
+							if (prev_t_in_ms in params.getParameters()['smooth'].pointValues) {
+								previousOutput = params.getParameters()['smooth'].pointValues[prev_t_in_ms]
+							}
+							output = params.getParameters()[paramName].fun(output, previousOutput, interpolatedKeyframeValue)
+						}
+						else {
+							output = params.getParameters()[paramName].fun(output, interpolatedKeyframeValue)
+						}
+						//output = params.getParameters()[paramName].fun(output, interpolatedKeyframeValue)
+						params.getParameters()['smooth'].pointValues[t_in_ms] = output
 					}
 
 				}.bind(this))

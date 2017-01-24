@@ -23,6 +23,23 @@ function Parameters() {
 								}
 							},
 
+	 						 smooth : {
+		 						 valueScale:[0,1],
+		 						 data : [{id:5, t:1500, value:0, selected:false}],
+		 						 fun: function(output, previousTimeOutput, currentParamValue) {
+								  if (currentParamValue === 0) {
+									  return output
+								  }
+									 var smoothOutput = output;
+									 var smoothTimes = Math.round(currentParamValue * 10);
+									 for (var i = 0; i < smoothTimes; i++) {
+									 	smoothOutput = (smoothOutput + previousTimeOutput)/2;
+									 }
+									  return smoothOutput;
+		  							},
+								 pointValues: {}
+	 						 },
+
 							maxValue : {
 								valueScale:[0,1],
 								data : [
