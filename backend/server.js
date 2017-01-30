@@ -73,6 +73,7 @@ function rendered_path(sp,name) {
         rendered_path_example = sp;
     } else if (name=="main") {
         rendered_path_main = sp;
+		rendered_path_example = sp;
     }
 }
 function render() {
@@ -239,6 +240,7 @@ function boardload(portName) {
                 dir:9,
                 cdir:8
             }
+//            pin: 5
         });
 
         myServo = new five.Servo({
@@ -364,7 +366,8 @@ function main() {
     // Deal with the stupid boards
     //------------------------------------------------------------------------------
     serialPort.list(function (err, ports) {
-        var filtered = ports.filter(function(port){
+		console.log(ports);
+        /*var filtered = ports.filter(function(port){
             // SerialPort(path,options,openImmediately)
             var srlport = new serialPort.SerialPort(port.comName,{},false)
             return  (port.comName.slice(0,11) == '/dev/cu.usb') &&
@@ -375,7 +378,9 @@ function main() {
         } else {
             boardload(filtered[0].comName);
         }
-        console.log(filtered)
+        console.log(filtered)*/
+		//boardload('COM5');
+		boardload('COM4');
     });
 }
 

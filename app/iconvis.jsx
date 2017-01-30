@@ -9,7 +9,8 @@ var WaveformPathMixin = require('./util/waveformpathmixin.js');
 var VTIconStore = require('./stores/vticonstore.js');
 var DragStore = require('./stores/dragstore.js');
 
-var io = require('socket.io-client/socket.io')
+{ /* var io = require('socket.io-client/socket.io') */}
+var io = require('./../thirdparty/socket/socket.io.js');
 
 var IconVis = React.createClass({
 	getInitialState: function(){
