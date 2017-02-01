@@ -101,23 +101,25 @@ function stop_render() {
 }
 
 function doSetTimeout(i) {
-    //log('set timeout called!')
+    console.log('set timeout called!')
     var t = setTimeout(function(){
         myServo.to(rendered_path_main[i]);
         // random = Math.max((Math.random()*80),15)
         // myServo.to(random);
         //log('random val: ',random)
-        myMotor.start(rendered_path_main[i]);
+		var motorSpeed = motorh.calculateMotorSpeed(rendered_path_main[i]);
+        myMotor.start(motorSpeed);
         //log('Setting speed to ' + rendered_path_example[i]);
         //log('Rotating servo to ' + rendered_path_main[i]);
+		console.log('motor speed at ' + rendered_path_main[i]);
         if (i == 0) {
-            myBiMotor.forward(rendered_path_main[i]);
+            myBiMotor.forward(motorSpeed);
         }
-        else if (rendered_path_main[i] < rendered_path_main[i-1]) {
-            myBiMotor.reverse(rendered_path_main[i]);
+        else if (motorSpeed <= motorh.calculateMotorSpeed(rendered_path_main[i-1])) {
+            myBiMotor.reverse(motorSpeed);
         }
         else {
-            myBiMotor.forward(rendered_path_main[i]);
+            myBiMotor.forward(motorSpeed);
         }
     },i*3);
     return t;
@@ -245,9 +247,9 @@ function boardload(portName) {
         var standby = new five.Pin(7);
         standby.high()
 
-        myMotor = new five.Motor({
-               pin: 5
-        });
+		// Using ADAFRUIT MOTOR SHIELD
+		var configs = five.Motor.SHIELD_CONFIGS.ADAFRUIT_V2;
+        myMotor = new five.Motor(configs.M1);
 
         myBiMotor = new five.Motor({
             pins: {
@@ -400,7 +402,7 @@ function main() {
         }
         console.log(filtered)*/
 		//boardload('COM5');
-		boardload('COM4');
+		boardload('COM12');
     });
 }
 

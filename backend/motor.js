@@ -88,10 +88,19 @@ function MotorHandler() {
   // this.io = io;
   // this.baz = 'baz'; // default value
 }
+
 // class methods
 MotorHandler.prototype.test = function() {
 	console.log("Tested MotorHandler as class")
 };
+
+// Motor requires minimum 50 speed to show output
+// value is between 0 - 1 taken from position
+MotorHandler.prototype.calculateMotorSpeed = function(value) {
+	return value + 50;
+};
+
+
 
 // export the class
 module.exports = MotorHandler;
