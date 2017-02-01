@@ -24,7 +24,7 @@ var motorh = new MotorHandler();
 //------------------------------------------------------------------------------
 // Globals
 //------------------------------------------------------------------------------
-var board, myServo, myMotor;
+var board, myServo, myMotor, myBiMotor;
 var rendered_path_main = [];
 var rendered_path_example = [];
 var parameters;
@@ -95,6 +95,8 @@ function stop_render() {
     for (var i=0; i<timeouts.length; i++) {
         clearTimeout(timeouts[i]);
     }
+     myMotor.stop();
+     myBiMotor.stop();
     log("Stopped render.");
 }
 
@@ -105,9 +107,18 @@ function doSetTimeout(i) {
         // random = Math.max((Math.random()*80),15)
         // myServo.to(random);
         //log('random val: ',random)
-        myMotor.start(rendered_path_example[i]);
+        myMotor.start(rendered_path_main[i]);
         //log('Setting speed to ' + rendered_path_example[i]);
         //log('Rotating servo to ' + rendered_path_main[i]);
+        if (i == 0) {
+            myBiMotor.forward(rendered_path_main[i]);
+        }
+        else if (rendered_path_main[i] < rendered_path_main[i-1]) {
+            myBiMotor.reverse(rendered_path_main[i]);
+        }
+        else {
+            myBiMotor.forward(rendered_path_main[i]);
+        }
     },i*3);
     return t;
 }
@@ -235,13 +246,17 @@ function boardload(portName) {
         standby.high()
 
         myMotor = new five.Motor({
+               pin: 5
+        });
+
+        myBiMotor = new five.Motor({
             pins: {
                 pwm:3,
                 dir:9,
                 cdir:8
             }
-//            pin: 5
         });
+
 
         myServo = new five.Servo({
             pin:10,
@@ -253,6 +268,11 @@ function boardload(portName) {
             motor: myMotor,
             servo: myServo
         });
+
+//        board.repl.inject({
+//            motor: myBiMotor,
+//            servo: myServo
+//        });
         io.emit('server_message','Ready to start board.');
             log('Sweep away, my captain.');
     });
