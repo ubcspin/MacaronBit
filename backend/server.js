@@ -111,15 +111,16 @@ function doSetTimeout(i) {
         myMotor.start(motorSpeed);
         //log('Setting speed to ' + rendered_path_example[i]);
         //log('Rotating servo to ' + rendered_path_main[i]);
-		console.log('motor speed at ' + rendered_path_main[i]);
         if (i == 0) {
             myBiMotor.forward(motorSpeed);
         }
-        else if (motorSpeed <= motorh.calculateMotorSpeed(rendered_path_main[i-1])) {
+        else if (motorSpeed < motorh.calculateMotorSpeed(rendered_path_main[i-1])) {
             myBiMotor.reverse(motorSpeed);
+			console.log('Motor reversing ' + motorSpeed);
         }
         else {
             myBiMotor.forward(motorSpeed);
+			console.log('Motor forwarding ' + motorSpeed);
         }
     },i*3);
     return t;
@@ -250,14 +251,15 @@ function boardload(portName) {
 		// Using ADAFRUIT MOTOR SHIELD
 		var configs = five.Motor.SHIELD_CONFIGS.ADAFRUIT_V2;
         myMotor = new five.Motor(configs.M1);
+		myBiMotor = new five.Motor(configs.M1);
 
-        myBiMotor = new five.Motor({
-            pins: {
-                pwm:3,
-                dir:9,
-                cdir:8
-            }
-        });
+        // myBiMotor = new five.Motor({
+        //    pins: {
+        //        pwm:3,
+        //        dir:9,
+        //        cdir:8
+        //    }
+        //});
 
 
         myServo = new five.Servo({
@@ -266,15 +268,15 @@ function boardload(portName) {
             range: [parameters.servoMin,parameters.servoMax] 
         });
 
-        board.repl.inject({
-            motor: myMotor,
-            servo: myServo
-        });
-
 //        board.repl.inject({
-//            motor: myBiMotor,
+//            motor: myMotor,
 //            servo: myServo
 //        });
+
+        board.repl.inject({
+            motor: myBiMotor,
+            servo: myServo
+        });
         io.emit('server_message','Ready to start board.');
             log('Sweep away, my captain.');
     });

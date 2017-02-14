@@ -60,6 +60,7 @@ var EditorHeader = React.createClass({
 			displayResetButton:false,
 			displayGetSetPointsButton:false,
 			displayLoadVoodleButton:true,
+			displayMotorRadioButton:true,
 			uploadFileID:"uploadedFile",
 			uploadVoodleFileID: "voodleFile"
 
@@ -269,7 +270,22 @@ var EditorHeader = React.createClass({
 					<a class="btn header" style={buttonStyle} onClick={this._onLoadSetPointsButtonClick} ><i className="fa fa-upload"></i>Load Voodle</a>
 					</span>);
 		}
-
+		
+		var motorForm = <span />
+		if (this.props.displayMotorRadioButton)
+		{
+			motorForm = (<span> 
+					<input type="radio" name="motor" value="unimotor"><font size="2"> Unidirectional Motor </font> </input>
+					<input type="radio" name="motor" value="bimotor"><font size="2"> Bidirectional Motor </font></input>
+			</span>);
+			uniMotor = (<span>
+				</span>);
+			biMotor = (<span>
+				
+				</span>);
+			
+		}
+		
 		return (
 			
 			<div>
@@ -290,6 +306,9 @@ var EditorHeader = React.createClass({
 				{resetButton}
 				{getSetPointsButton}
 				{loadVoodleButton}
+				
+				<span> Motor Speed </span>
+				{motorForm}
 				
 			</div>
 				
