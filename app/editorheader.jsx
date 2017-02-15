@@ -278,11 +278,6 @@ var EditorHeader = React.createClass({
 					<input type="radio" name="motor" value="unimotor"><font size="2"> Unidirectional Motor </font> </input>
 					<input type="radio" name="motor" value="bimotor"><font size="2"> Bidirectional Motor </font></input>
 			</span>);
-			uniMotor = (<span>
-				</span>);
-			biMotor = (<span>
-				
-				</span>);
 			
 		}
 		

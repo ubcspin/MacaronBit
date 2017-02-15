@@ -24,7 +24,7 @@ var motorh = new MotorHandler();
 //------------------------------------------------------------------------------
 // Globals
 //------------------------------------------------------------------------------
-var board, myServo, myMotor, myBiMotor;
+var board, myServo, myMotor, myBiMotor, myFlexSensor;
 var rendered_path_main = [];
 var rendered_path_example = [];
 var parameters;
@@ -111,16 +111,15 @@ function doSetTimeout(i) {
         myMotor.start(motorSpeed);
         //log('Setting speed to ' + rendered_path_example[i]);
         //log('Rotating servo to ' + rendered_path_main[i]);
+		
         if (i == 0) {
             myBiMotor.forward(motorSpeed);
         }
         else if (motorSpeed < motorh.calculateMotorSpeed(rendered_path_main[i-1])) {
             myBiMotor.reverse(motorSpeed);
-			console.log('Motor reversing ' + motorSpeed);
         }
         else {
             myBiMotor.forward(motorSpeed);
-			console.log('Motor forwarding ' + motorSpeed);
         }
     },i*3);
     return t;
@@ -261,12 +260,21 @@ function boardload(portName) {
         //    }
         //});
 
-
         myServo = new five.Servo({
             pin:10,
             center:true,
             range: [parameters.servoMin,parameters.servoMax] 
         });
+		
+		myFlexSensor = new five.Sensor({
+			pin: "A0",
+			freq: 100
+		});
+		
+		myFlexSensor.scale([0, 255]).on("data", function() {
+			myMotor.start(this.scaled);
+			console.log("sensor reads: " + this.scaled);
+		});
 
 //        board.repl.inject({
 //            motor: myMotor,
