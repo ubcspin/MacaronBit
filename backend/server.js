@@ -24,7 +24,7 @@ var motorh = new MotorHandler();
 //------------------------------------------------------------------------------
 // Globals
 //------------------------------------------------------------------------------
-var board, myServo, myMotor, myBiMotor, myFlexSensor;
+var board, myServo, myMotor, myBiMotor, myFlexSensor, myMotorPin;
 var rendered_path_main = [];
 var rendered_path_example = [];
 var parameters;
@@ -76,6 +76,7 @@ function rendered_path(sp,name) {
 		rendered_path_example = sp;
     }
 }
+
 function render() {
     stop_render();
      console.log('rendered path: ',getMaxOfArray(rendered_path_main),getMinOfArray(rendered_path_main))
@@ -236,6 +237,35 @@ function processCsv(csvfile){
     stream.pipe(csvStream);
 }
 
+var lastError = 0;
+var integratedError = 0;
+var pValue = 1;
+var dValue = 0;
+var iValue = 0;
+// HELLOOO!!! 
+
+// O_O who's still in the office at this time? and who is this LOL. everyone but YOU clearly...
+// uh oh. O_O I didn't get the memo apparently =/ we're having a party!!
+// like actually a party? no sophiaa we're still working :( it's dilan
+// wow dilan, I hope you're getting paid overtime =P it's 10 at night =o  opps. will work for food.
+// hey, free food gets me too haha
+function calculatePID(target, sensorValue, pValue, dValue, iValue) {
+	var currentError = target - sensorValue
+	// pCalc
+	var pCalc = pValue * currentError 
+	
+	// dCalc
+	var changeInError = currentError - lastError
+	lastError = currentError
+	var dCalc = dValue * changeInError
+	
+	// iCalc
+	integratedError = integratedError + currentError;
+	var iCalc = iValue * integratedError
+	
+	return pCalc + dCalc + iCalc
+}
+
 function boardload(portName) {
     //------------------------------------------------------------------------------
     // Board setup
@@ -273,8 +303,15 @@ function boardload(portName) {
 		
 		myFlexSensor.scale([0, 255]).on("data", function() {
 			myMotor.start(this.scaled);
-			console.log("sensor reads: " + this.scaled);
+			//console.log("sensor reads: " + this.scaled);
+			var sensorValue = readMotorPin();
+			var target = this.scaled;
+			var PID = calculatePID(target, sensorValue, pValue, dValue, iValue);
+			console.log("PID value: " + PID);
+			myMotor.start(PID);
 		});
+		
+		myMotorPin = new five.Pin("A0");
 
 //        board.repl.inject({
 //            motor: myMotor,
@@ -288,6 +325,13 @@ function boardload(portName) {
         io.emit('server_message','Ready to start board.');
             log('Sweep away, my captain.');
     });
+}
+
+function readMotorPin() {
+	five.Pin.read(myMotorPin, function(error, value) {
+		console.log(value);
+		return value;
+	});
 }
 
 //----------------------------------------------------------------------------------
