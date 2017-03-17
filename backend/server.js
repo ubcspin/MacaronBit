@@ -84,15 +84,15 @@ function render() {
         log('No path to render yet...');
     }
     else {
-        for(var i=0;i<rendered_path_main.length;i++) {
-            timeouts.push(doSetTimeout(i));
+        for(var i=0; i < rendered_path_main.length; i++) {
+			timeouts.push(doSetTimeout(i));
         }
     }
 }
 
 function stop_render() {
-    log("Stopping render...");
-    // myMotor.start(0)
+    console.log("Stopping render...");
+    myMotor.start(0)
     for (var i=0; i<timeouts.length; i++) {
         clearTimeout(timeouts[i]);
     }
@@ -101,6 +101,56 @@ function stop_render() {
     log("Stopped render.");
 }
 
+
+var motorSpeed = 0;
+var previousSensorValue = 0;
+var myMotorForward = true;
+function sensorPIDControl() {
+	console.log("Please provide target:");
+	var stdin = process.openStdin();
+
+	stdin.addListener("data", function(target) {
+		myFlexSensor.scale([0, 255]).on("data", function() {
+			calculateMotorSpeedPID(target, this.scaled);
+			if (Math.round(this.scaled) == target) {
+				myMotor.stop();
+				console.log("motor stopped");
+			}
+			else if (this.scaled > target) {
+				myMotor.start(motorSpeed);
+				console.log("motor speed: " + motorSpeed);
+				console.log("motor going forward");
+				console.log("sensor reads: " + this.scaled + "\n");
+			}
+			else if (this.scaled < target && previousSensorValue < this.scaled){
+				myMotor.reverse(motorSpeed*-1);
+				console.log("motor speed: " + motorSpeed);
+				console.log("motor going reverse");
+				console.log("sensor reads: " + this.scaled + "\n");
+			}
+			else if (this.scaled < target && previousSensorValue > this.scaled) {
+				myMotor.forward(motorSpeed*-1);
+				console.log("motor speed: " + motorSpeed);
+				console.log("motor going forward");
+				console.log("sensor reads: " + this.scaled + "\n");
+			}
+			previousSensorValue = this.scaled;
+		});
+	});
+		
+	
+}
+
+function calculateMotorSpeedPID(target, value) {
+	var pidOutput = calculatePID(target, value);
+	var roundMotorSpeed = Math.round(pidOutput);
+	motorSpeed = Math.max(-250, Math.min(roundMotorSpeed, 250));
+}
+
+var flexSensorPresent = true;
+var motorPresent = true;
+// Get initialized when board is ready
+var startSensorValue = 0;
 function doSetTimeout(i) {
     console.log('set timeout called!')
     var t = setTimeout(function(){
@@ -108,22 +158,84 @@ function doSetTimeout(i) {
         // random = Math.max((Math.random()*80),15)
         // myServo.to(random);
         //log('random val: ',random)
-		var motorSpeed = motorh.calculateMotorSpeed(rendered_path_main[i]);
-        myMotor.start(motorSpeed);
-        //log('Setting speed to ' + rendered_path_example[i]);
-        //log('Rotating servo to ' + rendered_path_main[i]);
+		if (flexSensorPresent && motorPresent) {
+			var sensorPositionMap = rendered_path_main.map(mapPositionToSensor);	
+		//	myMotor.start(sensorPositionMap[i]);
+			
+		//	if (rendered_path_main[i] < rendered_path_main[i-1]) {
+		//		myMotorForward = false;
+		//	}
+		//	else if (rendered_path_main[i] == rendered_path_main[i-1] && !myMotorForward) {
+		//		myFlexSensor.scale([0, 255]).on("data", function() {
+		//			if (this.scaled >= mapPositionToSensor(rendered_path_main[i]) || this.scaled >= startSensorValue) {
+		//				myMotorForward = true;
+		//				myMotor.forward(sensorPositionMap[i]);
+		//			}
+		//		});
+		//	}
+			
+		//	if (!myMotorForward) {
+		//		myMotor.reverse(sensorPositionMap[i]);
+		//	}
+			//myMotor.start(10);
+			
+			
+		}
+		else {
+			motorSpeed = motorh.calculateMotorSpeed(rendered_path_main[i]);
+			myMotor.start(motorSpeed);
+			console.log('Setting speed to ' + rendered_path_example[i]);
+			//log('Rotating servo to ' + rendered_path_main[i]);
+			
+			if (i == 0) {
+				myBiMotor.forward(motorSpeed);
+			}
+			else if (motorSpeed < motorh.calculateMotorSpeed(rendered_path_main[i-1])) {
+				myBiMotor.reverse(motorSpeed);
+			}
+			else {
+				myBiMotor.forward(motorSpeed);
+			}
+		}
 		
-        if (i == 0) {
-            myBiMotor.forward(motorSpeed);
-        }
-        else if (motorSpeed < motorh.calculateMotorSpeed(rendered_path_main[i-1])) {
-            myBiMotor.reverse(motorSpeed);
-        }
-        else {
-            myBiMotor.forward(motorSpeed);
-        }
     },i*3);
     return t;
+}
+
+// Using y = y = -0.1748x + 56.103 where y is sensorValue and x is position. 56.1 is replaced with starting sensor value
+// Using y = -0.0272x + 56.783 where y is motor speed and x is sensor value
+function mapPositionToSpeed(positionValue) {
+	var mappedSensorValue = mapPositionToSensor(positionValue)
+	return Math.round((mappedSensorValue - 56.783)/ (-0.0272))
+}
+
+function mapPositionToSensor(positionValue) {
+	return -0.1748*positionValue + 56.103
+}
+
+var lastError = 0;
+var integratedError = 0;
+var pValue = -51.0272;
+var dValue = 5;
+var iValue = -1;
+
+function calculatePID(target, sensorValue) {
+	var currentError = target - sensorValue
+	var pCalc = pValue * currentError 
+	//console.log("pValue: " + pCalc);
+
+	var changeInError = currentError - lastError
+	lastError = currentError
+	var dCalc = dValue * changeInError
+	//console.log("dValue: " + dCalc);
+	
+	integratedError = integratedError + currentError;
+	var iCalc = iValue * integratedError
+	
+	return pCalc + dCalc + iCalc
+}
+
+function mapMotorSpeedToSensor() {
 }
 
 function processBuffer( inputBuffer ) {
@@ -237,35 +349,6 @@ function processCsv(csvfile){
     stream.pipe(csvStream);
 }
 
-var lastError = 0;
-var integratedError = 0;
-var pValue = 1;
-var dValue = 0;
-var iValue = 0;
-// HELLOOO!!! 
-
-// O_O who's still in the office at this time? and who is this LOL. everyone but YOU clearly...
-// uh oh. O_O I didn't get the memo apparently =/ we're having a party!!
-// like actually a party? no sophiaa we're still working :( it's dilan
-// wow dilan, I hope you're getting paid overtime =P it's 10 at night =o  opps. will work for food.
-// hey, free food gets me too haha
-function calculatePID(target, sensorValue, pValue, dValue, iValue) {
-	var currentError = target - sensorValue
-	// pCalc
-	var pCalc = pValue * currentError 
-	
-	// dCalc
-	var changeInError = currentError - lastError
-	lastError = currentError
-	var dCalc = dValue * changeInError
-	
-	// iCalc
-	integratedError = integratedError + currentError;
-	var iCalc = iValue * integratedError
-	
-	return pCalc + dCalc + iCalc
-}
-
 function boardload(portName) {
     //------------------------------------------------------------------------------
     // Board setup
@@ -279,8 +362,9 @@ function boardload(portName) {
 
 		// Using ADAFRUIT MOTOR SHIELD
 		var configs = five.Motor.SHIELD_CONFIGS.ADAFRUIT_V2;
-        myMotor = new five.Motor(configs.M1);
+		myMotor = new five.Motor(configs.M1);
 		myBiMotor = new five.Motor(configs.M1);
+//		myMotor.start(0);
 
         // myBiMotor = new five.Motor({
         //    pins: {
@@ -301,17 +385,23 @@ function boardload(portName) {
 			freq: 100
 		});
 		
-		myFlexSensor.scale([0, 255]).on("data", function() {
-			myMotor.start(this.scaled);
+//		myFlexSensor.scale([0, 255]).on("data", function() {
+			//myMotor.start(this.scaled);
 			//console.log("sensor reads: " + this.scaled);
-			var sensorValue = readMotorPin();
-			var target = this.scaled;
-			var PID = calculatePID(target, sensorValue, pValue, dValue, iValue);
-			console.log("PID value: " + PID);
-			myMotor.start(PID);
+//			var sensorValue = readMotorPin();
+//			var target = this.scaled;
+//			var PID = calculatePID(target, sensorValue, pValue, dValue, iValue);
+//			console.log("PID value: " + PID);
+//			myMotor.start(PID);
+//		});
+
+		myFlexSensor.scale([0, 255]).on("data", function() {
+				startSensorValue = this.scaled;
+				//console.log("sensor reads: " + this.scaled);
 		});
 		
-		myMotorPin = new five.Pin("A0");
+		
+//		myMotorPin = new five.Pin("A0");
 
 //        board.repl.inject({
 //            motor: myMotor,
@@ -324,6 +414,8 @@ function boardload(portName) {
         });
         io.emit('server_message','Ready to start board.');
             log('Sweep away, my captain.');
+			
+		sensorPIDControl();
     });
 }
 
