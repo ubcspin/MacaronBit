@@ -103,42 +103,46 @@ function stop_render() {
 
 
 var motorSpeed = 0;
-var previousSensorValue = 0;
+var previousSensorValue = 5000;
 var myMotorForward = true;
+var targetValue;
 function sensorPIDControl() {
-	console.log("Please provide target:");
-	var stdin = process.openStdin();
-
-	stdin.addListener("data", function(target) {
-		myFlexSensor.scale([0, 255]).on("data", function() {
-			calculateMotorSpeedPID(target, this.scaled);
-			if (Math.round(this.scaled) == target) {
-				myMotor.stop();
-				console.log("motor stopped");
-			}
-			else if (this.scaled > target) {
-				myMotor.start(motorSpeed);
-				console.log("motor speed: " + motorSpeed);
-				console.log("motor going forward");
-				console.log("sensor reads: " + this.scaled + "\n");
-			}
-			else if (this.scaled < target && previousSensorValue < this.scaled){
-				myMotor.reverse(motorSpeed*-1);
-				console.log("motor speed: " + motorSpeed);
-				console.log("motor going reverse");
-				console.log("sensor reads: " + this.scaled + "\n");
-			}
-			else if (this.scaled < target && previousSensorValue > this.scaled) {
-				myMotor.forward(motorSpeed*-1);
-				console.log("motor speed: " + motorSpeed);
-				console.log("motor going forward");
-				console.log("sensor reads: " + this.scaled + "\n");
-			}
+	myFlexSensor.scale([0, 255]).on("data", function() {
+		calculateMotorSpeedPID(targetValue, this.scaled);
+		if (Math.round(this.scaled) == Math.round(targetValue)) {
+			myMotor.stop();
 			previousSensorValue = this.scaled;
-		});
-	});
+			console.log("motor stopped");
+		}
+		else if (this.scaled > targetValue) {
+			myMotor.start(motorSpeed);
+			previousSensorValue = this.scaled;
+			console.log("motor speed: " + motorSpeed);
+			console.log("motor going forward");
+			console.log("target value: " + targetValue);
+			console.log("sensor reads: " + this.scaled + "\n");
+		}
+		else if (this.scaled < targetValue && previousSensorValue > this.scaled){
+			myMotor.reverse(motorSpeed*-1);
+			previousSensorValue = this.scaled;
+			console.log("motor speed: " + motorSpeed);
+			console.log("previous sensor value: " + previousSensorValue);
+			console.log("motor going reverse");
+			console.log("target value: " + targetValue);
+			console.log("sensor reads: " + this.scaled + "\n");
+			
+		}
+		else if (this.scaled < targetValue && previousSensorValue < this.scaled) {
+			myMotor.forward(motorSpeed*-1);
+			previousSensorValue = this.scaled;
+			console.log("motor speed: " + motorSpeed);
+			console.log("previous sensor value: " + previousSensorValue);
+			console.log("motor going forward");
+			console.log("target value: " + targetValue);
+			console.log("sensor reads: " + this.scaled + "\n");
+		}
 		
-	
+	});
 }
 
 function calculateMotorSpeedPID(target, value) {
@@ -152,7 +156,7 @@ var motorPresent = true;
 // Get initialized when board is ready
 var startSensorValue = 0;
 function doSetTimeout(i) {
-    console.log('set timeout called!')
+    //console.log('set timeout called!')
     var t = setTimeout(function(){
         myServo.to(rendered_path_main[i]);
         // random = Math.max((Math.random()*80),15)
@@ -160,6 +164,10 @@ function doSetTimeout(i) {
         //log('random val: ',random)
 		if (flexSensorPresent && motorPresent) {
 			var sensorPositionMap = rendered_path_main.map(mapPositionToSensor);	
+			targetValue = sensorPositionMap[i];
+		//	console.log("target position:" + rendered_path_main[i]);
+		//	console.log("target sensor-position:" + sensorPositionMap[i]);
+		//	sensorPIDControl(sensorPositionMap[i]);
 		//	myMotor.start(sensorPositionMap[i]);
 			
 		//	if (rendered_path_main[i] < rendered_path_main[i-1]) {
@@ -202,35 +210,46 @@ function doSetTimeout(i) {
     return t;
 }
 
-// Using y = y = -0.1748x + 56.103 where y is sensorValue and x is position. 56.1 is replaced with starting sensor value
 // Using y = -0.0272x + 56.783 where y is motor speed and x is sensor value
 function mapPositionToSpeed(positionValue) {
 	var mappedSensorValue = mapPositionToSensor(positionValue)
 	return Math.round((mappedSensorValue - 56.783)/ (-0.0272))
 }
 
+// Using y = -0.2208x + 59.575 where y is the sensorValue and x is position. 
 function mapPositionToSensor(positionValue) {
-	return -0.1748*positionValue + 56.103
+	//return -0.1748*positionValue + 56.103
+	//return -0.2208*positionValue + 59.575
+	return -0.1781*positionValue + 59.326
 }
 
 var lastError = 0;
 var integratedError = 0;
+//var pValue = -51.0272;
+//var dValue = 5;
+//var iValue = -1;
 var pValue = -51.0272;
-var dValue = 5;
-var iValue = -1;
+var dValue = 5.25;
+var iValue = -0.7;
 
 function calculatePID(target, sensorValue) {
 	var currentError = target - sensorValue
 	var pCalc = pValue * currentError 
 	//console.log("pValue: " + pCalc);
 
-	var changeInError = currentError - lastError
+	var changeInError = 0;
+	if(!isNaN(lastError)) {
+		changeInError = currentError - lastError
+	}
 	lastError = currentError
 	var dCalc = dValue * changeInError
 	//console.log("dValue: " + dCalc);
 	
-	integratedError = integratedError + currentError;
+	if(!isNaN(currentError)) {
+		integratedError = integratedError + currentError;
+	}
 	var iCalc = iValue * integratedError
+	//console.log("iValue: " + iCalc);
 	
 	return pCalc + dCalc + iCalc
 }
@@ -382,7 +401,7 @@ function boardload(portName) {
 		
 		myFlexSensor = new five.Sensor({
 			pin: "A0",
-			freq: 100
+			freq: 125
 		});
 		
 //		myFlexSensor.scale([0, 255]).on("data", function() {
