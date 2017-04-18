@@ -19,6 +19,7 @@ var serialPort = require('serialport'); // for checking if serial ports are open
 
 var functions = require('./functions.js')
 var MotorHandler = require('./motor.js')
+//var Encoder = require('./encoder.js')
 var motorh = new MotorHandler();
 
 //------------------------------------------------------------------------------
@@ -151,7 +152,7 @@ function calculateMotorSpeedPID(target, value) {
 	motorSpeed = Math.max(-250, Math.min(roundMotorSpeed, 250));
 }
 
-var flexSensorPresent = true;
+var flexSensorPresent = false;
 var motorPresent = true;
 // Get initialized when board is ready
 var startSensorValue = 0;
@@ -383,15 +384,7 @@ function boardload(portName) {
 		var configs = five.Motor.SHIELD_CONFIGS.ADAFRUIT_V2;
 		myMotor = new five.Motor(configs.M1);
 		myBiMotor = new five.Motor(configs.M1);
-//		myMotor.start(0);
 
-        // myBiMotor = new five.Motor({
-        //    pins: {
-        //        pwm:3,
-        //        dir:9,
-        //        cdir:8
-        //    }
-        //});
 
         myServo = new five.Servo({
             pin:10,
@@ -404,23 +397,11 @@ function boardload(portName) {
 			freq: 125
 		});
 		
-//		myFlexSensor.scale([0, 255]).on("data", function() {
-			//myMotor.start(this.scaled);
-			//console.log("sensor reads: " + this.scaled);
-//			var sensorValue = readMotorPin();
-//			var target = this.scaled;
-//			var PID = calculatePID(target, sensorValue, pValue, dValue, iValue);
-//			console.log("PID value: " + PID);
-//			myMotor.start(PID);
-//		});
-
 		myFlexSensor.scale([0, 255]).on("data", function() {
 				startSensorValue = this.scaled;
 				//console.log("sensor reads: " + this.scaled);
 		});
-		
-		
-//		myMotorPin = new five.Pin("A0");
+
 
 //        board.repl.inject({
 //            motor: myMotor,
@@ -433,17 +414,111 @@ function boardload(portName) {
         });
         io.emit('server_message','Ready to start board.');
             log('Sweep away, my captain.');
-			
-		sensorPIDControl();
-    });
+		
+		if (flexSensorPresent && motorPresent) {	
+			sensorPIDControl();
+		}
+		
+//		board.firmata.setMaxListeners(100)
+
+//		var movement = [0, 0]
+		var movementA = 0;
+		var movementB = 0;
+	
+		var encodeA = new five.Pin("A1");
+		var encodeB = new five.Pin("A2");
+		var encodeArray = [];
+		
+		setupEncoder(movementA, movementB, encodeA, encodeB, encodeArray);
+		myMotor.start(100);
+		
+		board.wait(3000, function() {
+			myMotor.stop();
+			console.log("encodeArray has: " + encodeArray);
+			encodeArray.forEach(function(element) {
+				console.log(element);
+			});
+			if(encodeDirectionClockwise) {
+				console.log("motor going forward");
+			} else{
+				console.log("motor going backward");
+			}
+		});
+	});
+	
+	
 }
 
-function readMotorPin() {
-	five.Pin.read(myMotorPin, function(error, value) {
-		console.log(value);
-		return value;
-	});
+
+var encodeDirectionClockwise = true;
+function setupEncoder(movementA, movementB, encodeA, encodeB, encodeArray) {
+	console.log("setting up encoder");
+
+	
+	function startRead() {
+
+		try {
+			encodeA.INPUT
+			encodeA.high()
+			encodeB.INPUT
+			encodeB.high()
+		} catch(e) {
+			console.log('Err ', e)
+		}
+		five.Pin.read(encodeA, function(error, valueA) {
+			if (valueA > 200) {
+				movementA = 1;
+			}
+			else {
+				movementA = 0;
+			}
+		});
+		five.Pin.read(encodeB, function(error, valueB) {
+			if (valueB > 200) {
+				movementB = 1;
+			}
+			else {
+				movementB = 0;
+			}
+		});
+	}
+	startRead()
+	
+
+	setInterval(function() {
+		var includes = false;
+		var movementCombo = [movementA, movementB]
+		encodeArray.forEach(function(element) {
+			var is_same = (element.length == movementCombo.length) && element.every(function(move, index) {
+				return move === movementCombo[index]; 
+			});
+			if (is_same) {
+				includes = true;
+			}
+		});
+		if(!includes) {
+			encodeArray.push([movementA, movementB]);
+		}
+		if (encodeArray.length > 1) {
+			var position1 = encodeArray[0];
+			var position2 = encodeArray[1];
+			if(position1[0] == 0 && position2[1] == 0 || position1[0] == 1 && position2[1] == 1) {
+				encodeDirectionClockwise = true;
+				//console.log('Direction going forward');
+			}
+			else {
+				encodeDirectionClockwise = false;
+				//console.log('Direction going reverse');
+			}
+			//encodeArray = []
+		}
+		//console.log('Movement: ' + movementA )
+		//console.log('Movement: '+ movementB + "\n")
+	}, 1)
+	
+	
 }
+
 
 //----------------------------------------------------------------------------------
 // Main
