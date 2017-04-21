@@ -19,8 +19,9 @@ var serialPort = require('serialport'); // for checking if serial ports are open
 
 var functions = require('./functions.js')
 var MotorHandler = require('./motor.js')
-//var Encoder = require('./encoder.js')
+var EncoderHandler = require('./encoder.js')
 var motorh = new MotorHandler();
+var encoderHandler = new EncoderHandler();
 
 //------------------------------------------------------------------------------
 // Globals
@@ -102,10 +103,13 @@ function stop_render() {
     log("Stopped render.");
 }
 
-
+// Function used for tongue-motor-sensor system. sensorPIDControl observes current flexSensor value
+// (make sure flexSensor is properly initialized and uncommented in boardload) and controls motor 
+// speed and direction to try and hit target positions
 var motorSpeed = 0;
 var previousSensorValue = 5000;
 var myMotorForward = true;
+// targetValue changes in accordance to doSetTimeout(i)
 var targetValue;
 function sensorPIDControl() {
 	myFlexSensor.scale([0, 255]).on("data", function() {
@@ -146,12 +150,15 @@ function sensorPIDControl() {
 	});
 }
 
+// Calls calculatePID to get motor speed, rounds the returned value and caps it to 250 if the returned
+// value is higher or -250 if returned value is lower
 function calculateMotorSpeedPID(target, value) {
 	var pidOutput = calculatePID(target, value);
 	var roundMotorSpeed = Math.round(pidOutput);
 	motorSpeed = Math.max(-250, Math.min(roundMotorSpeed, 250));
 }
 
+// Change flexSensorPresent to true if running a sensor-motor system instead of just motor or just servo
 var flexSensorPresent = false;
 var motorPresent = true;
 // Get initialized when board is ready
@@ -163,32 +170,14 @@ function doSetTimeout(i) {
         // random = Math.max((Math.random()*80),15)
         // myServo.to(random);
         //log('random val: ',random)
+		
+		
 		if (flexSensorPresent && motorPresent) {
 			var sensorPositionMap = rendered_path_main.map(mapPositionToSensor);	
 			targetValue = sensorPositionMap[i];
 		//	console.log("target position:" + rendered_path_main[i]);
 		//	console.log("target sensor-position:" + sensorPositionMap[i]);
-		//	sensorPIDControl(sensorPositionMap[i]);
-		//	myMotor.start(sensorPositionMap[i]);
-			
-		//	if (rendered_path_main[i] < rendered_path_main[i-1]) {
-		//		myMotorForward = false;
-		//	}
-		//	else if (rendered_path_main[i] == rendered_path_main[i-1] && !myMotorForward) {
-		//		myFlexSensor.scale([0, 255]).on("data", function() {
-		//			if (this.scaled >= mapPositionToSensor(rendered_path_main[i]) || this.scaled >= startSensorValue) {
-		//				myMotorForward = true;
-		//				myMotor.forward(sensorPositionMap[i]);
-		//			}
-		//		});
-		//	}
-			
-		//	if (!myMotorForward) {
-		//		myMotor.reverse(sensorPositionMap[i]);
-		//	}
-			//myMotor.start(10);
-			
-			
+
 		}
 		else {
 			motorSpeed = motorh.calculateMotorSpeed(rendered_path_main[i]);
@@ -211,28 +200,31 @@ function doSetTimeout(i) {
     return t;
 }
 
+// Could be used instead of PID controller
 // Using y = -0.0272x + 56.783 where y is motor speed and x is sensor value
 function mapPositionToSpeed(positionValue) {
 	var mappedSensorValue = mapPositionToSensor(positionValue)
 	return Math.round((mappedSensorValue - 56.783)/ (-0.0272))
 }
 
-// Using y = -0.2208x + 59.575 where y is the sensorValue and x is position. 
+// Using y = -0.1781 + 59.575 where y is the sensorValue and x is position. 
+// return the target sensorValue
+// Equation calculated manually by observing the sensor output when motor-sensor system is at "0"
+// and when the motor-sensor system is at maximum position
 function mapPositionToSensor(positionValue) {
-	//return -0.1748*positionValue + 56.103
-	//return -0.2208*positionValue + 59.575
 	return -0.1781*positionValue + 59.326
 }
 
-var lastError = 0;
-var integratedError = 0;
-//var pValue = -51.0272;
-//var dValue = 5;
-//var iValue = -1;
+
+// p and i value is negative because flex sensor value decreases as position increases (e.g: tongue-motor-sensor 
+// system, position increase means tongue more contracted) 
+// d is positive as p and i values are negative
 var pValue = -51.0272;
 var dValue = 5.25;
 var iValue = -0.7;
-
+var lastError = 0;
+var integratedError = 0;
+// PID controller
 function calculatePID(target, sensorValue) {
 	var currentError = target - sensorValue
 	var pCalc = pValue * currentError 
@@ -253,9 +245,6 @@ function calculatePID(target, sensorValue) {
 	//console.log("iValue: " + iCalc);
 	
 	return pCalc + dCalc + iCalc
-}
-
-function mapMotorSpeedToSensor() {
 }
 
 function processBuffer( inputBuffer ) {
@@ -377,41 +366,33 @@ function boardload(portName) {
     
     board.on("ready", function() {
         log('board is ready!')
-        var standby = new five.Pin(7);
-        standby.high()
+        //var standby = new five.Pin(7);
+        //standby.high()
 
 		// Using ADAFRUIT MOTOR SHIELD
 		var configs = five.Motor.SHIELD_CONFIGS.ADAFRUIT_V2;
 		myMotor = new five.Motor(configs.M1);
 		myBiMotor = new five.Motor(configs.M1);
 
-
-        myServo = new five.Servo({
-            pin:10,
-            center:true,
-            range: [parameters.servoMin,parameters.servoMax] 
-        });
+		// Uncomment servo code when utilizing servos
+        //myServo = new five.Servo({
+        //    pin:10,
+        //    center:true,
+        //    range: [parameters.servoMin,parameters.servoMax] 
+        //});
 		
-		myFlexSensor = new five.Sensor({
-			pin: "A0",
-			freq: 125
-		});
+		// Uncomment flexSensor code when using flex sensors
+		//myFlexSensor = new five.Sensor({
+		//	pin: "A0",
+		//	freq: 125
+		//});
 		
-		myFlexSensor.scale([0, 255]).on("data", function() {
-				startSensorValue = this.scaled;
-				//console.log("sensor reads: " + this.scaled);
-		});
-
-
-//        board.repl.inject({
-//            motor: myMotor,
-//            servo: myServo
-//        });
-
         board.repl.inject({
-            motor: myBiMotor,
+            motor: myMotor,
             servo: myServo
         });
+
+
         io.emit('server_message','Ready to start board.');
             log('Sweep away, my captain.');
 		
@@ -419,37 +400,48 @@ function boardload(portName) {
 			sensorPIDControl();
 		}
 		
-//		board.firmata.setMaxListeners(100)
+		// Uncomment when testing and trying to implement encoders using encoder.js
+		//encoderHandler.encoderInit();
+		//for(i = 0; i < 10; i++) {
+		//	results = encoderHandler.readEncoder();
+			
+			//console.log("Results: " + results);
+		//}
 
+
+		// Uncoment if attempting to implement encoders but using own method to read positioning
+		// and not using encoder.js. Partially successful
 //		var movement = [0, 0]
-		var movementA = 0;
-		var movementB = 0;
+//		var movementA = 0;
+//		var movementB = 0;
 	
-		var encodeA = new five.Pin("A1");
-		var encodeB = new five.Pin("A2");
-		var encodeArray = [];
+		//var encodeA = new five.Pin("A1");
+		//var encodeB = new five.Pin("A2");
+		//var encodeArray = [];
 		
-		setupEncoder(movementA, movementB, encodeA, encodeB, encodeArray);
-		myMotor.start(100);
+		//setupEncoder(movementA, movementB, encodeA, encodeB, encodeArray);
+		//myMotor.start(100);
 		
-		board.wait(3000, function() {
-			myMotor.stop();
-			console.log("encodeArray has: " + encodeArray);
-			encodeArray.forEach(function(element) {
-				console.log(element);
-			});
-			if(encodeDirectionClockwise) {
-				console.log("motor going forward");
-			} else{
-				console.log("motor going backward");
-			}
-		});
+		//board.wait(3000, function() {
+		//	myMotor.stop();
+		//	console.log("encodeArray has: " + encodeArray);
+		//	encodeArray.forEach(function(element) {
+		//		console.log(element);
+		//	});
+		//	if(encodeDirectionClockwise) {
+		//		console.log("motor going forward");
+		//	} else{
+		//		console.log("motor going backward");
+		//	}
+		//});
 	});
 	
 	
 }
 
-
+// setUpEncoder was used as a substitute of encoder.js to read values from encoder and attempt to calculate
+// direction of motor movement 
+// current issues: readings work but the frequency of reading is questionable and direction of motor is unclear
 var encodeDirectionClockwise = true;
 function setupEncoder(movementA, movementB, encodeA, encodeB, encodeArray) {
 	console.log("setting up encoder");
@@ -629,7 +621,7 @@ function main() {
     //------------------------------------------------------------------------------
     serialPort.list(function (err, ports) {
 		console.log(ports);
-        /*var filtered = ports.filter(function(port){
+        var filtered = ports.filter(function(port){
             // SerialPort(path,options,openImmediately)
             var srlport = new serialPort.SerialPort(port.comName,{},false)
             return  (port.comName.slice(0,11) == '/dev/cu.usb') &&
@@ -640,9 +632,7 @@ function main() {
         } else {
             boardload(filtered[0].comName);
         }
-        console.log(filtered)*/
-		//boardload('COM5');
-		boardload('COM12');
+        console.log(filtered)
     });
 }
 
